@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-date-picker/paper-date-picker.html">
 <link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
 <link rel="import" href="../things-button/things-button.html">
+<link rel="import" href="../things-input-field/things-input-field.html">
 
 <!--
 `<things-date-picker>` Things Date Picker
@@ -19,9 +20,17 @@
 @demo demo/index.html
 -->
 <dom-module id="things-date-picker">
-	<template>
-		<input type="text" name="{{name}}" value={{selectedDate}} readOnly placeholder="{{label}}">
-		<paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showDatePicker"></paper-icon-button>
+  <template>
+    
+    <things-input-field 
+      label="[[label]]"
+      type="text"
+      name="{{name}}"
+      value="{{selectedDate}}"
+      readonly>
+    </things-input-field>
+    
+    <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showDatePicker"></paper-icon-button>
     <paper-dialog id="dateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{date}}"></paper-date-picker>
       <div class="buttons">

@@ -5,6 +5,7 @@
 <link rel="import" href="../paper-time-picker/paper-time-picker-dialog-style.html">
 
 <link rel="import" href="../things-button/things-button.html">
+<link rel="import" href="../things-input-field/things-input-field.html">
 
 <!--
 `<things-time-picker>` Things Time Picker
@@ -18,8 +19,16 @@
 @demo demo/demo-things-time-picker.html
 -->
 <dom-module id="things-time-picker">
-	<template>
-    <input type="text" name="{{name}}" value="{{selectedTime}}" readOnly placeholder="{{label}}">
+  <template>
+
+    <things-input-field 
+      label="[[label]]"
+      type="text"
+      name="{{name}}"
+      value="{{selectedTime}}"
+      readonly>
+    </things-input-field>
+    
     <paper-icon-button class="Navigation-icon" icon="alarm" on-tap="showTimePicker"></paper-icon-button>
     <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
       <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>

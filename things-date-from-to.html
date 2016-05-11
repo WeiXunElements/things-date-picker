@@ -5,6 +5,7 @@
 <link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
 <link rel="import" href="../things-button/things-button.html">
 <link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html">
+<link rel="import" href="../things-input-field/things-input-field.html">
 
 <!--
 `<things-date-from-to>` From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
@@ -21,7 +22,15 @@
 <dom-module id="things-date-from-to">
 
   <template>
-    <input type="text" name="fromDate" value={{selectedFromDate}} readOnly>
+  
+    <things-input-field
+      label="From"
+      type="text"
+      name="fromDate"
+      value="{{selectedFromDate}}"
+      readonly>
+    </things-input-field>
+
     <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showFromPicker"></paper-icon-button>
     <paper-dialog id="fromDateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{fromDate}}"></paper-date-picker>
@@ -31,7 +40,14 @@
       </div>
     </paper-dialog>
 
-    <input type="text" name="toDate" value={{selectedToDate}} readOnly>
+    <things-input-field
+      label="To"
+      type="text"
+      name="toDate"
+      value="{{selectedToDate}}"
+      readonly>
+    </things-input-field>
+
     <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showToPicker"></paper-icon-button>
     <paper-dialog id="toDateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{toDate}}"></paper-date-picker>
