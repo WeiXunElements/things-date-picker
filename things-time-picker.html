@@ -28,8 +28,9 @@
       value="{{selectedTime}}"
       readonly>
     </things-input-field>
-    
     <paper-icon-button class="Navigation-icon" icon="alarm" on-tap="showTimePicker"></paper-icon-button>
+    <paper-icon-button icon="icons:cancel" on-tap="clearField"></paper-icon-button>"
+    
     <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
       <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
       <div class="buttons">
@@ -55,6 +56,13 @@
          */
         selectTime: function() {
           this.selectedTime = this.time;
+        },
+
+        /**
+         * 초기화된 데이터를 제거하는 기능 
+         */
+        clearField: function() {
+          this.selectedTime = '';
         }
 
       })

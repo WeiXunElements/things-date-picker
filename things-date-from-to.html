@@ -30,8 +30,9 @@
       value="{{selectedFromDate}}"
       readonly>
     </things-input-field>
-
     <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showFromPicker"></paper-icon-button>
+    <paper-icon-button icon="icons:cancel" on-tap="clearFrom"></paper-icon-button>
+
     <paper-dialog id="fromDateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{fromDate}}"></paper-date-picker>
       <div class="buttons">
@@ -47,8 +48,9 @@
       value="{{selectedToDate}}"
       readonly>
     </things-input-field>
-
     <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showToPicker"></paper-icon-button>
+    <paper-icon-button icon="icons:cancel" on-tap="clearTo"></paper-icon-button>
+
     <paper-dialog id="toDateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{toDate}}"></paper-date-picker>
       <div class="buttons">
@@ -152,6 +154,20 @@
           return false;
         }
         return true;
+      },
+
+      /**
+       * 선택된 from date를 빈값으로 초기화
+       */
+      clearFrom: function() {
+        this.selectedFromDate = '';
+      },
+
+      /**
+       * 선택된 to date를 빈값으로 초기화
+       */
+      clearTo: function() {
+        this.selectedToDate = '';
       }
     });
   </script>

@@ -28,9 +28,11 @@
       name="{{name}}"
       value="{{selectedDate}}"
       readonly>
+      <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
     </things-input-field>
-    
     <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showDatePicker"></paper-icon-button>
+    <paper-icon-button icon="icons:cancel" on-tap="clearField"></paper-icon-button>
+
     <paper-dialog id="dateDialog" modal class="paper-date-picker-dialog">
       <paper-date-picker date="{{date}}"></paper-date-picker>
       <div class="buttons">
@@ -84,6 +86,13 @@
           // http://momentjs.com/
           //this.selectedDate = moment(this.date).locale('zh-cn').format('LL');
           this.selectedDate = moment(this.date).locale(this.locale).format(this.readFormat);
+        },
+
+        /**
+         * 초기화된 데이터를 제거하는 기능
+         */
+        clearField: function() {
+          this.selectedDate = '';
         }
 
       })
