@@ -42,9 +42,17 @@
   </template>
 
   <script type='text/javascript'>
-  	(function() {
+    (function() {
       Polymer({
         is: 'things-time-picker',
+
+        properties: {
+          value: {
+            type: String,
+            observer: '_valueChanged'
+          }
+        },
+
         /**
          * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
          */
@@ -63,9 +71,17 @@
          */
         clearField: function() {
           this.selectedTime = '';
+        },
+
+        /**
+         * time picker field의 값이 변화 했을시 실행되며
+         * selectedTime에 새로운 value를 초기화 한다.
+         */
+        _valueChanged: function(e) {
+          this.selectedTime = e;
         }
 
       })
-  	})();
+    })();
   </script>
 </dom-module>

@@ -90,7 +90,12 @@
           writeFormat: {
             type: String,
             value: 'YYYY-MM-DD'
-          }       
+          },
+
+          value: {
+            type: String,
+            observer: '_valueChanged'
+          }  
         },
         /**
          * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
@@ -112,6 +117,13 @@
          */
         clearField: function() {
           this.selectedDate = '';
+        },
+
+        /**
+         * input field의 값이 변화 했을시 변화된 값으로 초기화
+         */
+        _valueChanged: function(e) {
+          this.selectedDate = moment(e).locale(this.locale).format(this.readFormat);
         }
 
       })
