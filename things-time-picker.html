@@ -20,6 +20,24 @@
 -->
 <dom-module id="things-time-picker">
   <template>
+    <style>
+      things-input-field::shadow input{
+        @apply(--things-input);
+        width:calc(65% - 37px);
+      }
+      paper-icon-button.clear{
+        @apply(--things-small-icon);
+        margin-right:7px;margin-left:-27px;
+        opacity:.4;
+        position:relative;
+        top:-2px;
+      }
+      paper-icon-button.picker{
+        @apply(--things-picker-button);
+        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top:1px;
+      }
+    </style>  
 
     <things-input-field 
       label="[[label]]"
@@ -27,9 +45,10 @@
       name="{{name}}"
       value="{{selectedTime}}"
       readonly>
+      <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
     </things-input-field>
-    <paper-icon-button class="Navigation-icon" icon="alarm" on-tap="showTimePicker"></paper-icon-button>
-    <paper-icon-button icon="icons:cancel" on-tap="clearField"></paper-icon-button>
+    <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
+    <paper-icon-button class="picker" on-tap="showTimePicker"></paper-icon-button>
     
     <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
       <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
