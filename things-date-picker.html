@@ -45,6 +45,9 @@
       type="text"
       name="{{name}}"
       value="{{selectedDate}}"
+      validator="[[validator]]"
+      auto-validate="[[autoValidate]]"
+      error-message="[[errorMessage]]"
       readonly>
       <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
     </things-input-field>
@@ -68,6 +71,7 @@
         is: 'things-date-picker',
 
         properties: {
+
           /**
            * Date picker의 기준이 되는 locale을 설정한다.
            */
@@ -76,6 +80,7 @@
             notify: true,
             value: 'en'
           },
+
           /**
            * date의 읽기전용 format을 설정한다.
            */
@@ -84,6 +89,7 @@
             notify: true,
             value: 'YYYY-MM-DD'
           },
+
           /**
            * date의 쓰기전용 format을 설정한다.
            */
@@ -92,10 +98,35 @@
             value: 'YYYY-MM-DD'
           },
 
+          /**
+           * value attribute
+           */
           value: {
             type: String,
             observer: '_valueChanged'
-          }  
+          },
+
+          /**
+           * input field에서 사용할 validator name
+           */
+          validator: {
+            type: String
+          },
+
+          /**
+           * input field의 auto vaidation 여부
+           */
+          autoValidate: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * validation 오류시 출력되는 error message
+           */
+          errorMessage: {
+            type: String
+          }
         },
         /**
          * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.

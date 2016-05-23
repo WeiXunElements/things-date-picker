@@ -44,6 +44,9 @@
       type="text"
       name="{{name}}"
       value="{{selectedTime}}"
+      validator="[[validator]]"
+      auto-validate="[[autoValidate]]"
+      error-message="[[errorMessage]]"
       readonly>
       <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
     </things-input-field>
@@ -69,7 +72,29 @@
           value: {
             type: String,
             observer: '_valueChanged'
-          }
+          },
+
+          /**
+           * input field에서 사용할 validator name
+           */
+          validator: {
+            type: String
+          },
+
+          /**
+           * input field의 auto vaidation 여부
+           */
+          autoValidate: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * validation 오류시 출력되는 error message
+           */
+          errorMessage: {
+            type: String
+          }          
         },
 
         /**
