@@ -39,7 +39,7 @@
       label="[[label]]"
       type="text"
       name="[[name]]"
-      value="[[date]]"
+      value="[[value]]"
       validator="[[validator]]"
       auto-validate="[[autoValidate]]"
       error-message="[[errorMessage]]"
@@ -83,7 +83,7 @@
         /**
          * date value
          */
-        date: {
+        value: {
           type: String
         },
 
@@ -118,7 +118,7 @@
           owner: this,
           locale: this.locale,
           readFormat: this.readFormat,
-          date: (this.date) ? new Date(this.date) : new Date()
+          date: (this.value) ? new Date(this.value) : new Date()
         };  
 
         app.$['date-picker-dialog'].dialogToggle(dataObj, this._applySelectedDate);
@@ -128,14 +128,14 @@
        * things-date-picker-dialog에 전달할 callback 함수
        */
       _applySelectedDate: function(dataObj) {
-        this.date = dataObj.date;
+        this.value = dataObj.date;
       },
 
       /**
        * 초기화된 데이터를 제거하는 기능
        */
       clearField: function() {
-        this.date = '';
+        this.value = '';
       }
     });
   </script>
