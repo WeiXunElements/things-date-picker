@@ -1,6 +1,6 @@
 {
   "name": "things-date-picker",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "authors": [
     "Hatio Lab. <heartyoh@hatiolab.com>"
   ],
@@ -25,7 +25,8 @@
     "paper-date-picker": "bendavis78/paper-date-picker#^1.1.3",
     "things-button": "ThingsElements/things-button",
     "things-msg-box-behavior": "ThingsElements/things-msg-box-behavior",
-    "things-input-field": "ThingsElements/things-input-field"
+    "things-input-field": "ThingsElements/things-input-field",
+    "paper-button": "PolymerElements/paper-button#^1.0.12"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

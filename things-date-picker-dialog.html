@@ -1,0 +1,115 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-date-picker/paper-date-picker.html">
+<link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="things-date-picker-dialog">
+	<template>
+    <paper-dialog id="dateDialog" modal class="paper-date-picker-dialog">
+      <paper-date-picker date="{{date}}" locale="[[locale]]"></paper-date-picker>
+      <div class="buttons">
+        <paper-button raised dialog-confirm on-tap="selectDate">Select</paper-button>
+        <paper-button raised dialog-dismiss>Cancel</paper-button>
+      </div>
+    </paper-dialog>
+	</template>
+  
+	<script>
+		Polymer({
+			is: 'things-date-picker-dialog',
+
+			properties: {
+
+        /**
+         * Date picker의 기준이 되는 locale을 설정한다.
+         */
+        locale: {
+          type: String,
+          value: 'en'
+        },
+
+        /**
+         * date의 읽기전용 format을 설정한다.
+         */
+        readFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date의 쓰기전용 format을 설정한다.
+         */
+        writeFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * formatting 이전의 Date
+         */
+        date: {
+        	type: Date
+        },
+
+        /**
+         * 외부에서 전달받은 dataObject로 데이터의 가공없이 다시 돌려줍니다.
+         * dialog를 toggle한 element가 가지고 있어야 할 정보들을 담는데 사용합니다.
+         */
+        dataObj: {
+        	type: Object
+        },
+
+        /**
+         * dialogToggle 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
+         */
+        callback: {
+          type: Function
+        }
+			},
+
+
+      /**
+       * things-app.html에 등록 되어 있는 things-date-picker의 id를 통해 실행 됩니다.
+       * dialog를 toggle하고 callback 함수와 dataObj, date를 초기화하는 함수 
+       */
+	    dialogToggle: function(dataObj, callback) {
+        this.dataObj = null;
+        this.callback = null;
+
+        this.dataObj = dataObj;
+        this.callback = callback;
+        this.date = (dataObj.date) ? dataObj.date : new Date();
+
+        this.locale = (dataObj.locale) ? dataObj.locale : this.locale;
+        this.readFormat = (dataObj.readFormat) ? dataObj.readFormat : this.readFormat;
+
+	    	this.$['dateDialog'].toggle();
+	    },
+
+      /**
+       * date-picker의 dialog에서 date를 선택하고 해당 date를 formatting 합니다.
+       * callback 함수가 있을경우 callbakc함수를 호출 합니다.
+       */
+	    selectDate: function() {
+        if(this.dataObj) {
+          this.dataObj['date'] = this.formatting(this.date);
+          if(this.callback) {
+            this.callback.apply(this.dataObj.owner, [this.dataObj]);
+          }
+        }
+	    },
+
+      /**
+       * date를 locale과 readFormat에 맞춰 포매팅 하고 그 결과를 return 합니다.
+       */
+	    formatting: function(date) {
+        // http://momentjs.com/
+        //this.selectedDate = moment(this.date).locale('zh-cn').format('LL');
+        var date = moment(date).locale(this.locale).format(this.readFormat);
+        return date;
+	    }
+		});
+	</script>
+</dom-module>

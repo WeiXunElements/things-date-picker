@@ -1,9 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-
-<link rel="import" href="../paper-dialog/paper-dialog.html">
-<link rel="import" href="../paper-date-picker/paper-date-picker.html">
-<link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
-<link rel="import" href="../things-button/things-button.html">
 <link rel="import" href="../things-input-field/things-input-field.html">
 
 <!--
@@ -43,121 +38,105 @@
     <things-input-field 
       label="[[label]]"
       type="text"
-      name="{{name}}"
-      value="{{selectedDate}}"
+      name="[[name]]"
+      value="[[date]]"
       validator="[[validator]]"
       auto-validate="[[autoValidate]]"
       error-message="[[errorMessage]]"
       readonly>
-      <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
+      <paper-icon-button on-tap="clear"></paper-icon-button>
     </things-input-field>
     <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
-    <paper-icon-button class="picker" on-tap="showDatePicker"></paper-icon-button>
-    
-
-    <paper-dialog id="dateDialog" modal class="paper-date-picker-dialog">
-      <paper-date-picker date="{{date}}"></paper-date-picker>
-      <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectDate">Select</paper-button>
-        <paper-button raised dialog-dismiss>Cancel</paper-button>
-      </div>
-    </paper-dialog>
-
+    <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
   </template>
 
-  <script type='text/javascript'>
-    (function() {
-      Polymer({
-        is: 'things-date-picker',
+  <script>
+    Polymer({
+      is: 'things-date-picker',
 
-        properties: {
+      properties: {
 
-          /**
-           * Date picker의 기준이 되는 locale을 설정한다.
-           */
-          locale: {
-            type: String,
-            notify: true,
-            value: 'en'
-          },
-
-          /**
-           * date의 읽기전용 format을 설정한다.
-           */
-          readFormat: {
-            type: String,
-            notify: true,
-            value: 'YYYY-MM-DD'
-          },
-
-          /**
-           * date의 쓰기전용 format을 설정한다.
-           */
-          writeFormat: {
-            type: String,
-            value: 'YYYY-MM-DD'
-          },
-
-          /**
-           * value attribute
-           */
-          value: {
-            type: String,
-            observer: '_valueChanged'
-          },
-
-          /**
-           * input field에서 사용할 validator name
-           */
-          validator: {
-            type: String
-          },
-
-          /**
-           * input field의 auto vaidation 여부
-           */
-          autoValidate: {
-            type: Boolean,
-            value: false
-          },
-
-          /**
-           * validation 오류시 출력되는 error message
-           */
-          errorMessage: {
-            type: String
-          }
-        },
         /**
-         * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+         * Date picker의 기준이 되는 locale을 설정한다.
          */
-        showDatePicker: function() {
-          this.$.dateDialog.toggle();  
-        },
-        /**
-         * date picker에서 날짜를 결정하면 해당 날짜를 selectedDate에 초기화 한다.
-         */
-        selectDate: function() {
-          // http://momentjs.com/
-          //this.selectedDate = moment(this.date).locale('zh-cn').format('LL');
-          this.selectedDate = moment(this.date).locale(this.locale).format(this.readFormat);
+        locale: {
+          type: String,
+          value: 'en'
         },
 
         /**
-         * 초기화된 데이터를 제거하는 기능
+         * date의 읽기전용 format을 설정한다.
          */
-        clearField: function() {
-          this.selectedDate = '';
+        readFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
         },
 
         /**
-         * input field의 값이 변화 했을시 변화된 값으로 초기화
+         * date의 쓰기전용 format을 설정한다.
          */
-        _valueChanged: function(e) {
-          this.selectedDate = moment(e).locale(this.locale).format(this.readFormat);
+        writeFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date value
+         */
+        date: {
+          type: String
+        },
+
+        /**
+         * input field에서 사용할 validator name
+         */
+        validator: {
+          type: String
+        },
+
+        /**
+         * input field의 auto vaidation 여부
+         */
+        autoValidate: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * validation 오류시 출력되는 error message
+         */
+        errorMessage: {
+          type: String
         }
+      },
 
-      })
-    })();
+      /**
+       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       */
+      openDatePicker: function() {
+        var dataObj = {
+          owner: this,
+          locale: this.locale,
+          readFormat: this.readFormat,
+          date: (this.date) ? new Date(this.date) : new Date()
+        };  
+
+        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applySelectedDate);
+      },
+
+      /**
+       * things-date-picker-dialog에 전달할 callback 함수
+       */
+      _applySelectedDate: function(dataObj) {
+        this.date = dataObj.date;
+      },
+
+      /**
+       * 초기화된 데이터를 제거하는 기능
+       */
+      clearField: function() {
+        this.date = '';
+      }
+    });
   </script>
 </dom-module>
