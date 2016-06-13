@@ -22,9 +22,10 @@
 <dom-module id="things-date-from-to">
 
   <template>
-  
+    <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
+
     <things-input-field
-      label="From"
+      label="[[name]]"
       type="text"
       name="fromDate"
       value="{{selectedFromDate}}"
@@ -70,6 +71,12 @@
       ],
 
       properties: {
+        /**
+         * Name
+         */        
+        name: {
+          type: String
+        },
 
         /**
          * From Date
@@ -109,8 +116,20 @@
         writeFormat: {
           type: String,
           value: 'YYYY-MM-DD'
-        }
+        },
+
+        /**
+         * Form Submit시에 넘어갈 값 ex) 2015-05-01,2016-05-31
+         */
+        value: {
+          type: String
+        }        
       },
+
+      observers: [
+        '_selectedFromDateChanged(selectedFromDate)',
+        '_selectedToDateChanged(selectedToDate)'
+      ],      
 
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
@@ -168,6 +187,40 @@
        */
       clearTo: function() {
         this.selectedToDate = '';
+      },
+
+      /**
+       * From Date 선택시 - value 변경
+       */
+      _selectedFromDateChanged(selectedFromDate) {
+        if(!this.value) {
+          this.value = selectedFromDate + ',';
+        } else {
+          valueArr = this.value.split(',');
+          valueArr[0] = selectedFromDate;
+          this.value = valueArr.join(',');
+        }
+
+        if(this.value == ",") {
+          this.value = "";
+        }
+      },
+
+      /**
+       * To Date 선택시 - value 변경
+       */
+      _selectedToDateChanged(selectedToDate) {
+        if(!this.value) {
+          this.value = ',' + selectedToDate;
+        } else {
+          valueArr = this.value.split(',');
+          valueArr[1] = selectedToDate;
+          this.value = valueArr.join(',');
+        }
+
+        if(this.value == ",") {
+          this.value = "";
+        }        
       }
     });
   </script>
