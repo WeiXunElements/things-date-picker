@@ -22,43 +22,46 @@
 <dom-module id="things-date-from-to">
 
   <template>
+    <style>
+      things-input-field::shadow input{
+        @apply(--things-input);
+        width:calc(65% - 37px);
+      }
+      paper-icon-button.clear{
+        @apply(--things-small-icon);
+        margin-right:7px;margin-left:-27px;
+        opacity:.4;
+        position:relative;
+        top:-2px;
+      }
+      paper-icon-button.picker{
+        @apply(--things-picker-button);
+        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top:1px;
+      }
+    </style>
+
     <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
 
     <things-input-field
-      label="[[label]]"
+      label="[[fromLabel]]"
       type="text"
       name="fromDate"
       value="{{selectedFromDate}}"
       readonly>
     </things-input-field>
-    <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showFromPicker"></paper-icon-button>
-    <paper-icon-button icon="icons:cancel" on-tap="clearFrom"></paper-icon-button>
-
-    <paper-dialog id="fromDateDialog" modal class="paper-date-picker-dialog">
-      <paper-date-picker date="{{fromDate}}"></paper-date-picker>
-      <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectFromDate">Select</paper-button>
-        <paper-button raised dialog-dismiss>Cancel</paper-button>
-      </div>
-    </paper-dialog>
+    <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
+    <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
 
     <things-input-field
-      label="To"
+      label="[[toLabel]]"
       type="text"
       name="toDate"
       value="{{selectedToDate}}"
       readonly>
     </things-input-field>
-    <paper-icon-button class="Navigation-icon" icon="date-range" on-tap="showToPicker"></paper-icon-button>
-    <paper-icon-button icon="icons:cancel" on-tap="clearTo"></paper-icon-button>
-
-    <paper-dialog id="toDateDialog" modal class="paper-date-picker-dialog">
-      <paper-date-picker date="{{toDate}}"></paper-date-picker>
-      <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectToDate">Select</paper-button>
-        <paper-button raised dialog-dismiss>Cancel</paper-button>
-      </div>
-    </paper-dialog>
+    <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
+    <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
 
   </template>
 
@@ -76,6 +79,22 @@
          */        
         name: {
           type: String
+        },
+
+        /**
+         * from field label name
+         */
+        fromLabel: {
+          type: String,
+          value: 'From'
+        },
+
+        /**
+         * to field label name
+         */
+        toLabel: {
+          type: String,
+          value: 'To'
         },
 
         /**
@@ -134,31 +153,50 @@
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
        */
-      showFromPicker: function() {
-        this.$.fromDateDialog.toggle();
+      openFromPicker: function() {
+        var dataObj = {
+          owner: this,
+          locale: this.locale,
+          readFormat: this.readFormat,
+          date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date()
+        };  
+
+        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applyFromDate);
       },
 
-      showToPicker: function() {
-        this.$.toDateDialog.toggle();
-      },      
+      /**
+       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       */      
+      openToPicker: function() {
+        var dataObj = {
+          owner: this,
+          locale: this.locale,
+          readFormat: this.readFormat,
+          date: (this.selectedToDate) ? new Date(this.selectedToDate) : new Date()
+        };  
+
+        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applyToDate);        
+      },
 
       /**
-       * date picker에서 날짜를 결정하면 해당 날짜를 selectedFromDate에 초기화 한다.
-       * dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 Clear
+       * things-date-picker-dialog에 전달할 callback 함수
+       * selectedFromDate를 초기화 하고 dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
        */
-      selectFromDate: function() {
-        this.selectedFromDate = moment(this.fromDate).locale(this.locale).format(this.readFormat);
+      _applyFromDate: function(dataObj) {
+        this.selectedFromDate = dataObj.date;
+
         var isValid = this.dateValidation();
         if(!isValid)
           this.selectedFromDate = '';
       },
 
       /**
-       * date picker에서 날짜를 결정하면 해당 날짜를 selectedToDate에 초기화 한다.
-       * dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 Clear
+       * things-date-picker-dialog에 전달할 callback 함수
+       * selectedToDate를 초기화 하고 dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
        */
-      selectToDate: function() {
-        this.selectedToDate = moment(this.toDate).locale(this.locale).format(this.readFormat);
+      _applyToDate: function(dataObj) {
+        this.selectedToDate = dataObj.date;
+
         var isValid = this.dateValidation();
         if(!isValid)
           this.selectedToDate = '';
