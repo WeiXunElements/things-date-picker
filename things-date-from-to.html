@@ -63,6 +63,8 @@
     <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
     <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
 
+    <button on-tap="test">+</button>
+
   </template>
 
   <script>
@@ -79,6 +81,11 @@
          */        
         name: {
           type: String
+        },
+
+        label: {
+          type: String,
+          observer: '_labelChanged'
         },
 
         /**
@@ -149,6 +156,11 @@
         '_selectedFromDateChanged(selectedFromDate)',
         '_selectedToDateChanged(selectedToDate)'
       ],      
+
+      _labelChanged: function(label) {
+        this.fromLabel = label + ' (From)';
+        this.toLabel = label + ' (to)';
+      },
 
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
