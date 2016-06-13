@@ -42,28 +42,27 @@
     </style>
 
     <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
+    <div class="layout horizontal">
+      <things-input-field
+        label="[[fromLabel]]"
+        type="text"
+        name="fromDate"
+        value="{{selectedFromDate}}"
+        readonly>
+      </things-input-field>
+      <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
+      <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
 
-    <things-input-field
-      label="[[fromLabel]]"
-      type="text"
-      name="fromDate"
-      value="{{selectedFromDate}}"
-      readonly>
-    </things-input-field>
-    <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
-    <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
-
-    <things-input-field
-      label="[[toLabel]]"
-      type="text"
-      name="toDate"
-      value="{{selectedToDate}}"
-      readonly>
-    </things-input-field>
-    <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
-    <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
-
-    <button on-tap="test">+</button>
+      <things-input-field
+        label="[[toLabel]]"
+        type="text"
+        name="toDate"
+        value="{{selectedToDate}}"
+        readonly>
+      </things-input-field>
+      <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
+      <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
+    </div>
 
   </template>
 
@@ -157,6 +156,9 @@
         '_selectedToDateChanged(selectedToDate)'
       ],      
 
+      /**
+       * label을 property로 받아서 fromLabel과 toLabel을 초기화 합니다.
+       */
       _labelChanged: function(label) {
         this.fromLabel = label + ' (From)';
         this.toLabel = label + ' (to)';
