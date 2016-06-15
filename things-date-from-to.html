@@ -47,6 +47,8 @@
         label="[[fromLabel]]"
         type="text"
         name="fromDate"
+        is-valid="[[fromValid]]"
+        error-message="[[errorMessage]]"
         value="{{selectedFromDate}}"
         readonly>
       </things-input-field>
@@ -57,6 +59,8 @@
         label="[[toLabel]]"
         type="text"
         name="toDate"
+        is-valid="[[toValid]]"
+        error-message="[[errorMessage]]"
         value="{{selectedToDate}}"
         readonly>
       </things-input-field>
@@ -82,6 +86,9 @@
           type: String
         },
 
+        /**
+         * label name
+         */
         label: {
           type: String,
           observer: '_labelChanged'
@@ -101,20 +108,6 @@
         toLabel: {
           type: String,
           value: 'To'
-        },
-
-        /**
-         * From Date
-         */
-        fromDate: {
-          type: String
-        },
-
-        /**
-         * To Date
-         */
-        toDate: {
-          type: String
         },
 
         /**
@@ -148,7 +141,21 @@
          */
         value: {
           type: String
-        }        
+        },
+
+        /**
+         * from - to picker 사이의 선택 가능 일수 (허용 범위)
+         */
+        allowRange: {
+          type: Number
+        },
+
+        /**
+         * input field의 입력된 값이 allowRange에 부함하지 않을 경우 나타나는 메시지
+         */
+        errorMessage: {
+          type: String
+        }
       },
 
       observers: [
@@ -170,8 +177,6 @@
       openFromPicker: function() {
         var dataObj = {
           owner: this,
-          locale: this.locale,
-          readFormat: this.readFormat,
           date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date()
         };  
 
@@ -184,8 +189,6 @@
       openToPicker: function() {
         var dataObj = {
           owner: this,
-          locale: this.locale,
-          readFormat: this.readFormat,
           date: (this.selectedToDate) ? new Date(this.selectedToDate) : new Date()
         };  
 
@@ -194,24 +197,24 @@
 
       /**
        * things-date-picker-dialog에 전달할 callback 함수
-       * selectedFromDate를 초기화 하고 dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
+       * selectedFromDate를 초기화 하고 dialogValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
        */
       _applyFromDate: function(dataObj) {
         this.selectedFromDate = dataObj.date;
 
-        var isValid = this.dateValidation();
+        var isValid = this.dialogValidation();
         if(!isValid)
           this.selectedFromDate = '';
       },
 
       /**
        * things-date-picker-dialog에 전달할 callback 함수
-       * selectedToDate를 초기화 하고 dateValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
+       * selectedToDate를 초기화 하고 dialogValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
        */
       _applyToDate: function(dataObj) {
         this.selectedToDate = dataObj.date;
 
-        var isValid = this.dateValidation();
+        var isValid = this.dialogValidation();
         if(!isValid)
           this.selectedToDate = '';
       },
@@ -219,7 +222,7 @@
       /**
        * from date와 to date 간의 범위 validation check, valid = true return, invalid = false return
        */
-      dateValidation: function() {
+      dialogValidation: function() {
         if(this.selectedFromDate && this.selectedToDate && this.selectedFromDate > this.selectedToDate)  {
           this.openInfoMsg({ title : 'Invalid Date Range!', text : 'Please Select Proper Date.', type : 'info', timer : 5000 });
           return false;
@@ -228,52 +231,118 @@
       },
 
       /**
-       * 선택된 from date를 빈값으로 초기화
+       * 선택된 from date를 빈값으로 초기화하며 inputfield의 vaild를 true로 설정
        */
       clearFrom: function() {
         this.selectedFromDate = '';
+        this.fromValid = true;
       },
 
       /**
-       * 선택된 to date를 빈값으로 초기화
+       * 선택된 to date를 빈값으로 초기화며 inputfield의 vaild를 true로 설정
        */
       clearTo: function() {
         this.selectedToDate = '';
+        this.toValid = true;
       },
 
       /**
        * From Date 선택시 - value 변경
+       * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
+       * allowRange가 있다면 toValidateion함수를 호출 합니다.
        */
-      _selectedFromDateChanged(selectedFromDate) {
+      _selectedFromDateChanged(date) {
+        this.selectedFromDate = this.formatting(date);
         if(!this.value) {
-          this.value = selectedFromDate + ',';
+          this.value = this.selectedFromDate + ',';
         } else {
           valueArr = this.value.split(',');
-          valueArr[0] = selectedFromDate;
+          valueArr[0] = this.selectedFromDate;
           this.value = valueArr.join(',');
         }
 
         if(this.value == ",") {
           this.value = "";
+        }
+
+        if(this.allowRange && this.allowRange != '') {
+          this.fromValidation();
         }
       },
 
       /**
        * To Date 선택시 - value 변경
+       * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
+       * allowRange가 있다면 toValidateion함수를 호출 합니다.
        */
-      _selectedToDateChanged(selectedToDate) {
+      _selectedToDateChanged(date) {
+        this.selectedToDate = this.formatting(date);
         if(!this.value) {
-          this.value = ',' + selectedToDate;
+          this.value = ',' + this.selectedToDate;
         } else {
           valueArr = this.value.split(',');
-          valueArr[1] = selectedToDate;
+          valueArr[1] = this.selectedToDate;
           this.value = valueArr.join(',');
         }
 
         if(this.value == ",") {
           this.value = "";
-        }        
-      }
+        }
+
+        if(this.allowRange && this.allowRange != '') {
+          this.toValidation();
+        }
+      },
+
+      /**
+       * allowRange가 있을 경우 발생합니다.
+       * 입력받은 fromDate가 toDate와 비교하여 허용범위 안에 있는지를 계산하고
+       * 범위 밖일 경우 fromValid를 false로 리턴하여 errorMessage를 출력
+       */
+      fromValidation: function() {
+        if(this.selectedFromDate && this.selectedToDate) {
+          var fromDate = new Date(this.selectedFromDate);
+          var toDate = new Date(this.selectedToDate);
+          var allowFromDate = new Date();
+          allowFromDate.setDate(toDate.getDate() - this.allowRange);
+
+          if(fromDate < allowFromDate) {
+            this.fromValid = false;
+          } else {
+            this.toValid = true;
+            this.fromValid = true;
+          }
+        }
+      },
+
+      /**
+       * allowRange가 있을 경우 발생합니다.
+       * 입력받은 toDate가 fromDate와 비교하여 허용범위 안에 있는지를 계산하고
+       * 범위 밖일 경우 toValid를 false로 리턴하여 errorMessage를 출력
+       */
+      toValidation: function() {
+        if(this.selectedFromDate && this.selectedToDate) {
+          var fromDate = new Date(this.selectedFromDate);
+          var toDate = new Date(this.selectedToDate);
+          var allowToDate = new Date();
+          allowToDate.setDate(fromDate.getDate() + this.allowRange);
+
+          if(toDate > allowToDate) {
+            this.toValid = false;
+          } else {
+            this.toValid = true;
+            this.fromValid = true;
+          }
+        }
+      },
+
+      /**
+       * 전달받은 date와 locale, readFormat를 바탕으로 formatting 합니다.
+       */
+      formatting: function(date) {
+        if(date && date != '')
+          return moment(date).locale(this.locale).format(this.readFormat);
+      }      
     });
   </script>
 

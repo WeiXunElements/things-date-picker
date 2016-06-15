@@ -80,10 +80,7 @@
 
         this.dataObj = dataObj;
         this.callback = callback;
-        this.date = (dataObj.date) ? new Date(dataObj.date) : new Date();
-
-        this.locale = (dataObj.locale) ? dataObj.locale : this.locale;
-        this.readFormat = (dataObj.readFormat) ? dataObj.readFormat : this.readFormat;
+        this.date = (dataObj.date) ? dataObj.date : new Date();
 
         this.$['dateDialog'].toggle();
       },
@@ -94,21 +91,11 @@
        */
       selectDate: function() {
         if(this.dataObj) {
-          this.dataObj['date'] = this.formatting(this.date);
+          this.dataObj['date'] = this.date;
           if(this.callback) {
             this.callback.apply(this.dataObj.owner, [this.dataObj]);
           }
         }
-      },
-
-      /**
-       * date를 locale과 readFormat에 맞춰 포매팅 하고 그 결과를 return 합니다.
-       */
-      formatting: function(date) {
-        // http://momentjs.com/
-        //this.selectedDate = moment(this.date).locale('zh-cn').format('LL');
-        var date = moment(date).locale(this.locale).format(this.readFormat);
-        return date;
       }
     });
   </script>

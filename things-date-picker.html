@@ -84,7 +84,8 @@
          * date value
          */
         value: {
-          type: String
+          type: String,
+          observer: '_valueChanged'
         },
 
         /**
@@ -116,8 +117,6 @@
       openDatePicker: function() {
         var dataObj = {
           owner: this,
-          locale: this.locale,
-          readFormat: this.readFormat,
           date: (this.value) ? new Date(this.value) : new Date()
         };  
 
@@ -136,6 +135,14 @@
        */
       clearField: function() {
         this.value = '';
+      },
+
+      /**
+       * value가 변화하면 date, locale, readFormat를 읽어와 string 타입으로 포메팅 합니다.
+       */
+      _valueChanged: function(date) {
+        if(date && date != '')
+          this.value = moment(date).locale(this.locale).format(this.readFormat);
       }
     });
   </script>
