@@ -91,11 +91,15 @@
        */
       selectDate: function() {
         if(this.dataObj) {
-          this.dataObj['date'] = this.date;
+          this.dataObj['date'] = this.formatting(this.date);
           if(this.callback) {
             this.callback.apply(this.dataObj.owner, [this.dataObj]);
           }
         }
+      },
+
+      formatting: function(date) {
+        return moment(date).locale(this.locale).format(this.readFormat);
       }
     });
   </script>
