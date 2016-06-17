@@ -80,7 +80,7 @@
 
         this.dataObj = dataObj;
         this.callback = callback;
-        this.date = (dataObj.date) ? dataObj.date : new Date();
+        this.date = (dataObj.date) ? new Date(dataObj.date) : new Date();
 
         this.$['dateDialog'].toggle();
       },
@@ -98,8 +98,15 @@
         }
       },
 
+      /**
+       * date를 iso 표준의 string으로 변환 후 
+       * locale, readFormat를 바탕으로 formatting 합니다.
+       */
       formatting: function(date) {
-        return moment(date).locale(this.locale).format(this.readFormat);
+        if(date && date != '') {
+          date = (typeof(date) == 'object') ? date.toISOString() : new Date(date).toISOString();
+          return moment(date).locale(this.locale).format(this.readFormat);
+        }
       }
     });
   </script>

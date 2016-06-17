@@ -344,11 +344,14 @@
       },
 
       /**
-       * 전달받은 date와 locale, readFormat를 바탕으로 formatting 합니다.
+       * date를 iso 표준의 string으로 변환 후 
+       * locale, readFormat를 바탕으로 formatting 합니다.
        */
       formatting: function(date) {
-        if(date && date != '')
+        if(date && date != '') {
+          date = (typeof(date) == 'object') ? date.toISOString() : new Date(date).toISOString();
           return moment(date).locale(this.locale).format(this.readFormat);
+        }
       }      
     });
   </script>
