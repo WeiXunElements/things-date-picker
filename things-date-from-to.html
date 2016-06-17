@@ -235,7 +235,6 @@
        */
       clearFrom: function() {
         this.selectedFromDate = '';
-        this.fromValid = true;
       },
 
       /**
@@ -243,7 +242,6 @@
        */
       clearTo: function() {
         this.selectedToDate = '';
-        this.toValid = true;
       },
 
       /**
@@ -301,18 +299,25 @@
        */
       fromValidation: function() {
         if(this.selectedFromDate && this.selectedToDate) {
-          var fromDate = new Date(this.selectedFromDate);
-          var toDate = new Date(this.selectedToDate);
-          var allowFromDate = new Date();
+          var fromDate = this.setHours(new Date(this.selectedFromDate));
+          var toDate = this.setHours(new Date(this.selectedToDate));
+          var allowFromDate = this.setHours(new Date());
+
           allowFromDate.setDate(toDate.getDate() - this.allowRange);
 
           if(fromDate < allowFromDate) {
             this.fromValid = false;
+            this.clearFrom();
           } else {
             this.toValid = true;
             this.fromValid = true;
           }
         }
+      },
+
+      setHours: function(date) {
+        date.setHours(0, 0, 0, 0);
+        return date;
       },
 
       /**
@@ -322,13 +327,15 @@
        */
       toValidation: function() {
         if(this.selectedFromDate && this.selectedToDate) {
-          var fromDate = new Date(this.selectedFromDate);
-          var toDate = new Date(this.selectedToDate);
-          var allowToDate = new Date();
+          var fromDate = this.setHours(new Date(this.selectedFromDate));
+          var toDate = this.setHours(new Date(this.selectedToDate));
+          var allowToDate = this.setHours(new Date());
+
           allowToDate.setDate(fromDate.getDate() + this.allowRange);
 
           if(toDate > allowToDate) {
             this.toValid = false;
+            this.clearTo();
           } else {
             this.toValid = true;
             this.fromValid = true;
