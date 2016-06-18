@@ -249,7 +249,7 @@
        * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
        * allowRange가 있다면 toValidateion함수를 호출 합니다.
        */
-      _selectedFromDateChanged(date) {
+      _selectedFromDateChanged: function(date) {
         this.selectedFromDate = this.formatting(date);
         if(!this.value) {
           this.value = this.selectedFromDate + ',';
@@ -273,7 +273,7 @@
        * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
        * allowRange가 있다면 toValidateion함수를 호출 합니다.
        */
-      _selectedToDateChanged(date) {
+      _selectedToDateChanged: function(date) {
         this.selectedToDate = this.formatting(date);
         if(!this.value) {
           this.value = ',' + this.selectedToDate;
