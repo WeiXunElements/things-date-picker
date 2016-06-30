@@ -23,16 +23,25 @@
 
   <template>
     <style>
+      things-input-field{
+        width:49%;
+      }
+      things-input-field::shadow label{
+        width:25.5%;
+      }
       things-input-field::shadow input{
         @apply(--things-input);
-        width:calc(65% - 37px);
+        width:calc(66.5% - 37px);
+      }
+      things-input-field[name="toDate"]{
+        margin-left:2.5%;
       }
       paper-icon-button.clear{
         @apply(--things-small-icon);
-        margin-right:7px;margin-left:-27px;
+        margin-right:11px;margin-left:-71px;
         opacity:.4;
         position:relative;
-        top:-2px;
+        top:5px;
       }
       paper-icon-button.picker{
         @apply(--things-picker-button);
