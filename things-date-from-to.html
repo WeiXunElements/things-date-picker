@@ -23,25 +23,22 @@
 
   <template>
     <style>
-      things-input-field{
-        width:49%;
+      .input-fieldset{
+        @apply(--layout-flex)
       }
       things-input-field::shadow label{
-        width:25.5%;
+
       }
       things-input-field::shadow input{
-        @apply(--things-input);
-        width:calc(66.5% - 37px);
-      }
-      things-input-field[name="toDate"]{
-        margin-left:2.5%;
+          width:calc(65% - 37px)
       }
       paper-icon-button.clear{
         @apply(--things-small-icon);
-        margin-right:11px;margin-left:-71px;
+        margin-left:-26px;
+        margin-right:6px;
         opacity:.4;
         position:relative;
-        top:5px;
+        top:-2px;
       }
       paper-icon-button.picker{
         @apply(--things-picker-button);
@@ -52,29 +49,34 @@
 
     <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
     <div class="layout horizontal">
-      <things-input-field
-        label="[[fromLabel]]"
-        type="text"
-        name="fromDate"
-        is-valid="[[fromValid]]"
-        error-message="[[errorMessage]]"
-        value="{{selectedFromDate}}"
-        readonly>
-      </things-input-field>
-      <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
-      <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
+      <div class="input-fieldset">
+          <things-input-field
+            label="[[fromLabel]]"
+            type="text"
+            name="fromDate"
+            is-valid="[[fromValid]]"
+            error-message="[[errorMessage]]"
+            value="{{selectedFromDate}}"
+            class="flex"
+            readonly>
+          </things-input-field>
+          <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
+          <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
+      </div>
 
-      <things-input-field
-        label="[[toLabel]]"
-        type="text"
-        name="toDate"
-        is-valid="[[toValid]]"
-        error-message="[[errorMessage]]"
-        value="{{selectedToDate}}"
-        readonly>
-      </things-input-field>
-      <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
-      <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
+      <div class="input-fieldset">
+          <things-input-field
+            label="[[toLabel]]"
+            type="text"
+            name="toDate"
+            is-valid="[[toValid]]"
+            error-message="[[errorMessage]]"
+            value="{{selectedToDate}}"
+            readonly>
+          </things-input-field>
+          <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
+          <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
+      </div>
     </div>
 
   </template>
