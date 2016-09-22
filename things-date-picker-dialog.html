@@ -7,7 +7,7 @@
 
 <dom-module id="things-date-picker-dialog">
   <template>
-    <paper-dialog id="dateDialog" modal class="paper-date-picker-dialog">
+    <paper-dialog id="dateDialog" modal always-on-top class="paper-date-picker-dialog">
       <paper-date-picker date="{{date}}" locale="[[locale]]"></paper-date-picker>
       <div class="buttons">
         <paper-button raised dialog-confirm on-tap="selectDate">Select</paper-button>
