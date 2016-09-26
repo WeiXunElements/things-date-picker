@@ -120,7 +120,7 @@
           date: (this.value) ? new Date(this.value) : new Date()
         };  
 
-        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applySelectedDate);
+        app.$['dialog-manager'].openDateDialog(dataObj, this._applySelectedDate);
       },
 
       /**
