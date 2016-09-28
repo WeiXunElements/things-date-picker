@@ -118,9 +118,13 @@
         var dataObj = {
           owner: this,
           date: (this.value) ? new Date(this.value) : new Date()
-        };  
+        };
 
-        app.$['dialog-manager'].openDateDialog(dataObj, this._applySelectedDate);
+        var event = {};
+        event.dataObj = dataObj;
+        event.callback = this._applySelectedDate;
+
+        this.fire('things-date-picker-toggle', event);
       },
 
       /**
