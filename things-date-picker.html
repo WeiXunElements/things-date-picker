@@ -120,10 +120,7 @@
           date: (this.value) ? new Date(this.value) : new Date()
         };
 
-        var event = {};
-        event.dataObj = dataObj;
-        event.callback = this._applySelectedDate;
-
+        var event = { dataObj: dataObj, callback: this._applySelectedDate };
         this.fire('things-date-picker-toggle', event);
       },
 
