@@ -191,7 +191,8 @@
           date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date()
         };  
 
-        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applyFromDate);
+        var event = { dataObj: dataObj, callback: this._applyFromDate };
+        this.fire('things-date-picker-toggle', event);
       },
 
       /**
@@ -203,7 +204,8 @@
           date: (this.selectedToDate) ? new Date(this.selectedToDate) : new Date()
         };  
 
-        app.$['date-picker-dialog'].dialogToggle(dataObj, this._applyToDate);        
+        var event = { dataObj: dataObj, callback: this._applyToDate };
+        this.fire('things-date-picker-toggle', event);
       },
 
       /**
