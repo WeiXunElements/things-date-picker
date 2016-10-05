@@ -62,7 +62,7 @@
         },
 
         /**
-         * dialogToggle 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
+         * open 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
          */
         callback: {
           type: Function
@@ -74,7 +74,7 @@
        * things-app.html에 등록 되어 있는 things-date-picker의 id를 통해 실행 됩니다.
        * dialog를 toggle하고 callback 함수와 dataObj, date를 초기화하는 함수 
        */
-      dialogToggle: function(dataObj, callback) {
+      open: function(dataObj, callback) {
         this.dataObj = null;
         this.callback = null;
 
@@ -82,7 +82,14 @@
         this.callback = callback;
         this.date = (dataObj.date) ? new Date(dataObj.date) : new Date();
 
-        this.$['dateDialog'].toggle();
+        this.$['dateDialog'].open();
+      },
+
+      /**
+       * date-picker-dialog close
+       */
+      close: function() {
+        this.$['dateDialog'].close();
       },
 
       /**
