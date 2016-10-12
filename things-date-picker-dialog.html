@@ -7,7 +7,7 @@
 
 <dom-module id="things-date-picker-dialog">
   <template>
-    <paper-dialog id="dateDialog" modal always-on-top class="paper-date-picker-dialog">
+    <paper-dialog id="date-dialog" modal always-on-top class="paper-date-picker-dialog">
       <paper-date-picker date="{{date}}" locale="[[locale]]"></paper-date-picker>
       <div class="buttons">
         <paper-button raised dialog-confirm on-tap="selectDate">Select</paper-button>
@@ -82,14 +82,14 @@
         this.callback = callback;
         this.date = (dataObj.date) ? new Date(dataObj.date) : new Date();
 
-        this.$['dateDialog'].open();
+        this.$['date-dialog'].open();
       },
 
       /**
        * date-picker-dialog close
        */
       close: function() {
-        this.$['dateDialog'].close();
+        this.$['date-dialog'].close();
       },
 
       /**
@@ -114,6 +114,10 @@
           date = (typeof(date) == 'object') ? date.toISOString() : new Date(date).toISOString();
           return moment(date).locale(this.locale).format(this.readFormat);
         }
+      },
+
+      getDialog: function() {
+        return this.$['date-dialog'];
       }
     });
   </script>
