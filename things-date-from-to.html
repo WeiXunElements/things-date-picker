@@ -20,19 +20,17 @@
 @demo demo/demo-things-date-from-to.html
 -->
 <dom-module id="things-date-from-to">
-
   <template>
     <style>
-      .input-fieldset{
+      .input-fieldset {
         @apply(--layout-flex)
       }
-      things-input-field::shadow label{
-
+      things-input-field::shadow label {
       }
-      things-input-field::shadow input{
-          width:calc(65% - 37px)
+      things-input-field::shadow input {
+        width:calc(65% - 37px)
       }
-      paper-icon-button.clear{
+      paper-icon-button.clear {
         @apply(--things-small-icon);
         margin-left:-26px;
         margin-right:6px;
@@ -40,7 +38,7 @@
         position:relative;
         top:-2px;
       }
-      paper-icon-button.picker{
+      paper-icon-button.picker {
         @apply(--things-picker-button);
         background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
         top:1px;
@@ -48,37 +46,39 @@
     </style>
 
     <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
+
     <div class="layout horizontal">
+      <!-- from date -->
       <div class="input-fieldset">
-          <things-input-field
-            label="[[fromLabel]]"
-            type="text"
-            name="fromDate"
-            is-valid="[[fromValid]]"
-            error-message="[[errorMessage]]"
-            value="{{selectedFromDate}}"
-            class="flex"
-            readonly>
-          </things-input-field>
-          <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
-          <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
+        <things-input-field
+          label="[[fromLabel]]"
+          type="text"
+          name="fromDate"
+          is-valid="[[fromValid]]"
+          error-message="[[errorMessage]]"
+          value="{{selectedFromDate}}"
+          class="flex"
+          readonly>
+        </things-input-field>
+        <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
+        <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
       </div>
 
+      <!-- to date -->
       <div class="input-fieldset">
-          <things-input-field
-            label="[[toLabel]]"
-            type="text"
-            name="toDate"
-            is-valid="[[toValid]]"
-            error-message="[[errorMessage]]"
-            value="{{selectedToDate}}"
-            readonly>
-          </things-input-field>
-          <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
-          <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
+        <things-input-field
+          label="[[toLabel]]"
+          type="text"
+          name="toDate"
+          is-valid="[[toValid]]"
+          error-message="[[errorMessage]]"
+          value="{{selectedToDate}}"
+          readonly>
+        </things-input-field>
+        <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
+        <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
       </div>
     </div>
-
   </template>
 
   <script>
@@ -172,14 +172,14 @@
       observers: [
         '_selectedFromDateChanged(selectedFromDate)',
         '_selectedToDateChanged(selectedToDate)'
-      ],      
+      ],
 
       /**
        * label을 property로 받아서 fromLabel과 toLabel을 초기화 합니다.
        */
       _labelChanged: function(label) {
         this.fromLabel = label + ' (From)';
-        this.toLabel = label + ' (to)';
+        this.toLabel = label + ' (To)';
       },
 
       /**
@@ -237,9 +237,10 @@
        */
       dialogValidation: function() {
         if(this.selectedFromDate && this.selectedToDate && this.selectedFromDate > this.selectedToDate)  {
-          this.openInfoMsg({ title : 'Invalid Date Range!', text : 'Please Select Proper Date.', type : 'info', timer : 5000 });
+          this.openInfoMsg({ title : Things.DataGlobal.t('text.invalid_input'), text : Things.DataGlobal.t('text.invalid_date_range'), type : 'info', timer : 5000 });
           return false;
         }
+
         return true;
       },
 
@@ -264,16 +265,18 @@
        */
       _selectedFromDateChanged: function(date) {
         this.selectedFromDate = this.formatting(date);
+
         if(!this.value) {
           this.value = this.selectedFromDate + ',';
+
         } else {
           valueArr = this.value.split(',');
           valueArr[0] = this.selectedFromDate;
           this.value = valueArr.join(',');
         }
 
-        if(this.value == ",") {
-          this.value = "";
+        if(this.value == ',') {
+          this.value = '';
         }
 
         if(this.allowRange && this.allowRange != '') {
@@ -288,16 +291,18 @@
        */
       _selectedToDateChanged: function(date) {
         this.selectedToDate = this.formatting(date);
+
         if(!this.value) {
           this.value = ',' + this.selectedToDate;
+
         } else {
           valueArr = this.value.split(',');
           valueArr[1] = this.selectedToDate;
           this.value = valueArr.join(',');
         }
 
-        if(this.value == ",") {
-          this.value = "";
+        if(this.value == ',') {
+          this.value = '';
         }
 
         if(this.allowRange && this.allowRange != '') {
@@ -315,7 +320,6 @@
           var fromDate = this.setHours(new Date(this.selectedFromDate));
           var toDate = this.setHours(new Date(this.selectedToDate));
           var allowFromDate = this.setHours(new Date());
-
           allowFromDate.setDate(toDate.getDate() - this.allowRange);
 
           if(fromDate < allowFromDate) {
@@ -343,7 +347,6 @@
           var fromDate = this.setHours(new Date(this.selectedFromDate));
           var toDate = this.setHours(new Date(this.selectedToDate));
           var allowToDate = this.setHours(new Date());
-
           allowToDate.setDate(fromDate.getDate() + this.allowRange);
 
           if(toDate > allowToDate) {
@@ -368,5 +371,4 @@
       }      
     });
   </script>
-
 </dom-module>
