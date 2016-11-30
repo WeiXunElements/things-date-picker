@@ -267,11 +267,11 @@
         this.selectedFromDate = this.formatting(date);
 
         if(!this.value) {
-          this.value = this.selectedFromDate + ',';
-
+            this.value = (this.selectedFromDate != undefined ? this.selectedFromDate : '') + ',';
         } else {
           valueArr = this.value.split(',');
-          valueArr[0] = this.selectedFromDate;
+          valueArr[0] = this.selectedFromDate == undefined ? '' : this.selectedFromDate;
+          
           this.value = valueArr.join(',');
         }
 
@@ -293,11 +293,11 @@
         this.selectedToDate = this.formatting(date);
 
         if(!this.value) {
-          this.value = ',' + this.selectedToDate;
-
+            this.value = ',' + (this.selectedToDate != undefined ? this.selectedToDate : '');
         } else {
           valueArr = this.value.split(',');
-          valueArr[1] = this.selectedToDate;
+          valueArr[1] = this.selectedToDate == undefined ? '' : this.selectedToDate;
+
           this.value = valueArr.join(',');
         }
 
