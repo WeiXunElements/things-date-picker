@@ -60,6 +60,7 @@
           class="flex"
           readonly>
         </things-input-field>
+
         <paper-icon-button class="clear" icon="clear" on-tap="clearFrom"></paper-icon-button>
         <paper-icon-button class="picker" on-tap="openFromPicker"></paper-icon-button>
       </div>
@@ -75,6 +76,7 @@
           value="{{selectedToDate}}"
           readonly>
         </things-input-field>
+
         <paper-icon-button class="clear" icon="clear" on-tap="clearTo"></paper-icon-button>
         <paper-icon-button class="picker" on-tap="openToPicker"></paper-icon-button>
       </div>
@@ -155,6 +157,20 @@
         },
 
         /**
+         * From Date
+         */
+        selectedFromDate: {
+          type: Date
+        },
+
+        /**
+         * To Date
+         */
+        selectedToDate: {
+          type: Date
+        },
+
+        /**
          * from - to picker 사이의 선택 가능 일수 (허용 범위)
          */
         allowRange: {
@@ -188,11 +204,12 @@
       openFromPicker: function() {
         var dataObj = {
           owner: this,
-          date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date()
+          date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date(),
+          maxDate: this.selectedToDate ? new Date(this.selectedToDate) : null,
+          minDate: null
         };  
 
-        var event = { dataObj: dataObj, callback: this._applyFromDate };
-        this.fire('things-date-picker-toggle', event);
+        this.fire('things-date-picker-toggle', { dataObj: dataObj, callback: this._applyFromDate });
       },
 
       /**
@@ -201,11 +218,12 @@
       openToPicker: function() {
         var dataObj = {
           owner: this,
-          date: (this.selectedToDate) ? new Date(this.selectedToDate) : new Date()
-        };  
+          date: (this.selectedToDate) ? new Date(this.selectedToDate) : new Date(),
+          minDate: this.selectedFromDate ? new Date(this.selectedFromDate) : null,
+          maxDate: null          
+        };
 
-        var event = { dataObj: dataObj, callback: this._applyToDate };
-        this.fire('things-date-picker-toggle', event);
+        this.fire('things-date-picker-toggle', { dataObj: dataObj, callback: this._applyToDate });
       },
 
       /**
@@ -214,10 +232,8 @@
        */
       _applyFromDate: function(dataObj) {
         this.selectedFromDate = dataObj.date;
-
         var isValid = this.dialogValidation();
-        if(!isValid)
-          this.selectedFromDate = '';
+        if(!isValid) this.selectedFromDate = '';
       },
 
       /**
@@ -226,10 +242,8 @@
        */
       _applyToDate: function(dataObj) {
         this.selectedToDate = dataObj.date;
-
         var isValid = this.dialogValidation();
-        if(!isValid)
-          this.selectedToDate = '';
+        if(!isValid) this.selectedToDate = '';
       },
 
       /**
@@ -237,7 +251,7 @@
        */
       dialogValidation: function() {
         if(this.selectedFromDate && this.selectedToDate && this.selectedFromDate > this.selectedToDate)  {
-          this.openInfoMsg({ title : Things.DataGlobal.t('text.invalid_input'), text : Things.DataGlobal.t('text.invalid_date_range'), type : 'info', timer : 5000 });
+          this.openInfoMsg({ title : Things.DataGlobal.t('text.invalid_input'), text : Things.DataGlobal.t('text.invalid_date_range', {a : this.allowRange}), type : 'info', timer : 5000 });
           return false;
         }
 
@@ -267,21 +281,16 @@
         this.selectedFromDate = this.formatting(date);
 
         if(!this.value) {
-            this.value = (this.selectedFromDate != undefined ? this.selectedFromDate : '') + ',';
+          this.value = (this.selectedFromDate != undefined ? this.selectedFromDate : '') + ',';
+
         } else {
           valueArr = this.value.split(',');
           valueArr[0] = this.selectedFromDate == undefined ? '' : this.selectedFromDate;
-          
           this.value = valueArr.join(',');
         }
 
-        if(this.value == ',') {
-          this.value = '';
-        }
-
-        if(this.allowRange && this.allowRange != '') {
-          this.fromValidation();
-        }
+        if(this.value == ',') this.value = '';
+        if(this.allowRange && this.allowRange != '') this.fromValidation();
       },
 
       /**
@@ -293,21 +302,16 @@
         this.selectedToDate = this.formatting(date);
 
         if(!this.value) {
-            this.value = ',' + (this.selectedToDate != undefined ? this.selectedToDate : '');
+          this.value = ',' + (this.selectedToDate != undefined ? this.selectedToDate : '');
+
         } else {
           valueArr = this.value.split(',');
           valueArr[1] = this.selectedToDate == undefined ? '' : this.selectedToDate;
-
           this.value = valueArr.join(',');
         }
 
-        if(this.value == ',') {
-          this.value = '';
-        }
-
-        if(this.allowRange && this.allowRange != '') {
-          this.toValidation();
-        }
+        if(this.value == ',') this.value = '';
+        if(this.allowRange && this.allowRange != '') this.toValidation();
       },
 
       /**
@@ -332,6 +336,9 @@
         }
       },
 
+      /**
+       * Hour 설정 
+       */
       setHours: function(date) {
         date.setHours(0, 0, 0, 0);
         return date;
@@ -360,15 +367,18 @@
       },
 
       /**
-       * date를 iso 표준의 string으로 변환 후 
-       * locale, readFormat를 바탕으로 formatting 합니다.
+       * date를 iso 표준의 string으로 변환 후 locale, readFormat를 바탕으로 formatting 합니다.
+       *
+       * @param {Object} date
        */
       formatting: function(date) {
-        if(date && date != '') {
-          date = (typeof(date) == 'object') ? date.toISOString() : new Date(date).toISOString();
-          return moment(date).locale(this.locale).format(this.readFormat);
+        if(date) {
+          var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
+          return moment(dt).locale(this.locale).format(this.readFormat);
+        } else {
+          return null
         }
-      }      
+      }    
     });
   </script>
 </dom-module>

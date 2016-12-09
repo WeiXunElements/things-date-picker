@@ -1,5 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
+
 <link rel="import" href="../things-input-field/things-input-field.html">
+<link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html">
+<link rel="import" href="../things-global-behavior/things-global-behavior.html">
+
 <link rel="import" href="things-date-picker-dialog.html">
 
 <!--
@@ -15,6 +19,7 @@
 
 @demo demo/index.html
 -->
+
 <dom-module id="things-date-picker">
   <template>
     <style>
@@ -46,6 +51,7 @@
       error-message="[[errorMessage]]"
       readonly>
     </things-input-field>
+
     <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
     <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
   </template>
@@ -54,8 +60,12 @@
     Polymer({
       is: 'things-date-picker',
 
-      properties: {
+      behaviors: [
+        Things.GlobalBehavior,
+        Things.MsgBoxBehavior
+      ],
 
+      properties: {
         /**
          * Date picker의 기준이 되는 locale을 설정한다.
          */
@@ -89,6 +99,20 @@
         },
 
         /**
+         * minimum date
+         */
+        minDate: {
+          type: Date
+        },
+
+        /**
+         * maximum date
+         */
+        maxDate: {
+          type: Date
+        },
+
+        /**
          * input field에서 사용할 validator name
          */
         validator: {
@@ -115,17 +139,19 @@
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
        */
       openDatePicker: function() {
-        var dataObj = {
-          owner: this,
-          date: (this.value) ? new Date(this.value) : new Date()
+        var dt = this.value ? new Date(this.value) : new Date();
+        var event = { 
+          dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate }, 
+          callback: this._applySelectedDate 
         };
-
-        var event = { dataObj: dataObj, callback: this._applySelectedDate };
+        
         this.fire('things-date-picker-toggle', event);
       },
 
       /**
        * things-date-picker-dialog에 전달할 callback 함수
+       *
+       * @param {Object} dateObj
        */
       _applySelectedDate: function(dataObj) {
         this.value = dataObj.date;
