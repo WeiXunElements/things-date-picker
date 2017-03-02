@@ -204,8 +204,8 @@
       openFromPicker: function() {
         var dataObj = {
           owner: this,
-          date: (this.selectedFromDate) ? new Date(this.selectedFromDate) : new Date(),
-          maxDate: this.selectedToDate ? new Date(this.selectedToDate) : null,
+          date: (this.selectedFromDate) ? new Date(this.selectedFromDate).setHours(0,0,0) : new Date(),
+          maxDate: this.selectedToDate ? new Date(this.selectedToDate).setHours(23,59,59) : null,
           minDate: null
         };  
 
