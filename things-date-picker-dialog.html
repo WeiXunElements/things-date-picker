@@ -19,7 +19,7 @@
       </div>
     </paper-dialog>
   </template>
-  
+
   <script>
     Polymer({
       is: 'things-date-picker-dialog',
@@ -27,7 +27,8 @@
       properties: {
         /**
          * Date picker의 기준이 되는 locale을 설정한다.
-         */
+         * @type: String
+         ******/
         locale: {
           type: String,
           value: 'en'
@@ -35,7 +36,8 @@
 
         /**
          * date의 읽기전용 format을 설정한다.
-         */
+         * @type: String
+         ******/
         readFormat: {
           type: String,
           value: 'YYYY-MM-DD'
@@ -43,7 +45,8 @@
 
         /**
          * date의 쓰기전용 format을 설정한다.
-         */
+         * @type: String
+         ******/
         writeFormat: {
           type: String,
           value: 'YYYY-MM-DD'
@@ -52,7 +55,8 @@
         /**
          * 외부에서 전달받은 dataObject로 데이터의 가공없이 다시 돌려줍니다.
          * dialog를 toggle한 element가 가지고 있어야 할 정보들을 담는데 사용합니다.
-         */
+         * @type: Object
+         ******/
         dataObj: {
           type: Object,
           observer: '_dataObjChanged'
@@ -60,28 +64,32 @@
 
         /**
          * formatting 이전의 Date
-         */
+         * @type: String
+         ******/
         date: {
           type: String
         },
 
         /**
-         * 최소 Limit 일자 
-         */
+         * 최소 Limit 일자
+         * @type: Date
+         ******/
         minDate: {
           type: Date
         },
 
         /**
-         * 최대 Limit 일자 
-         */
+         * 최대 Limit 일자
+         * @type: Date
+         ******/
         maxDate: {
           type: Date
         },
 
         /**
          * open 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
-         */
+         * @type: Function
+         ******/
         callback: {
           type: Function
         }
@@ -101,7 +109,7 @@
       },
 
       /**
-       * callback 함수와 dataObj로 부터 Date Picker 다이얼로그를 오픈하는 함수 
+       * callback 함수와 dataObj로 부터 Date Picker 다이얼로그를 오픈하는 함수
        *
        * @param {Object} dataObj
        * @param {Function} callback

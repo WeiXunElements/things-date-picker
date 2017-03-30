@@ -4,7 +4,7 @@
   "authors": [
     "Hatio Lab. <heartyoh@hatiolab.com>"
   ],
-  "description": "An element providing Date Picker, Time Picker and Date Range Pickger (things-date-from-to).",
+  "description": "시간(Time) Picker and Date(날짜) Pickger 범위 (things-date-from-to).",
   "keywords": [
     "web-component",
     "polymer",

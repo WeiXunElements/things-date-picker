@@ -11,8 +11,8 @@
 `<things-time-picker>` Things Time Picker
 
   Example
-    
-    <things-time-picker 
+
+    <things-time-picker
       label="Time Picker">
     </things-time-picker>
 
@@ -37,9 +37,9 @@
         background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
         top:1px;
       }
-    </style>  
+    </style>
 
-    <things-input-field 
+    <things-input-field
       label="[[label]]"
       type="text"
       name="{{name}}"
@@ -52,7 +52,7 @@
     </things-input-field>
     <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
     <paper-icon-button class="picker" on-tap="showTimePicker"></paper-icon-button>
-    
+
     <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
       <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
       <div class="buttons">
@@ -76,14 +76,16 @@
 
           /**
            * input field에서 사용할 validator name
-           */
+           * @type: String
+           ******/
           validator: {
             type: String
           },
 
           /**
            * input field의 auto vaidation 여부
-           */
+           * @type: Boolean
+           ******/
           autoValidate: {
             type: Boolean,
             value: false
@@ -91,10 +93,11 @@
 
           /**
            * validation 오류시 출력되는 error message
-           */
+           * @type: String
+           ******/
           errorMessage: {
             type: String
-          }          
+          }
         },
 
         /**
@@ -111,7 +114,7 @@
         },
 
         /**
-         * 초기화된 데이터를 제거하는 기능 
+         * 초기화된 데이터를 제거하는 기능
          */
         clearField: function() {
           this.selectedTime = '';

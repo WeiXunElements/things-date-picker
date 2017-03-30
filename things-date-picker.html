@@ -10,10 +10,10 @@
 `<things-date-picker>` Things Date Picker
 
   Example
-    
-    <things-date-picker 
-      label="Date Picker" 
-      locale="ko" 
+
+    <things-date-picker
+      label="Date Picker"
+      locale="ko"
       read-format="YYYY-MM-DD">
     </things-date-picker>
 
@@ -41,7 +41,7 @@
       }
     </style>
 
-    <things-input-field 
+    <things-input-field
       label="[[label]]"
       type="text"
       name="[[name]]"
@@ -68,7 +68,8 @@
       properties: {
         /**
          * Date picker의 기준이 되는 locale을 설정한다.
-         */
+         * @type: String
+         ******/
         locale: {
           type: String,
           value: 'en'
@@ -76,7 +77,8 @@
 
         /**
          * date의 읽기전용 format을 설정한다.
-         */
+         * @type: String
+         ******/
         readFormat: {
           type: String,
           value: 'YYYY-MM-DD'
@@ -84,7 +86,8 @@
 
         /**
          * date의 쓰기전용 format을 설정한다.
-         */
+         * @type: String
+         ******/
         writeFormat: {
           type: String,
           value: 'YYYY-MM-DD'
@@ -92,7 +95,8 @@
 
         /**
          * date value
-         */
+         * @type: String
+         ******/
         value: {
           type: String,
           notify: true
@@ -100,28 +104,32 @@
 
         /**
          * minimum date
-         */
+         * @type: Date
+         ******/
         minDate: {
           type: Date
         },
 
         /**
          * maximum date
-         */
+         * @type: Date
+         ******/
         maxDate: {
           type: Date
         },
 
         /**
          * input field에서 사용할 validator name
-         */
+         * @type: String
+         ******/
         validator: {
           type: String
         },
 
         /**
          * input field의 auto vaidation 여부
-         */
+         * @type: Boolean
+         ******/
         autoValidate: {
           type: Boolean,
           value: false
@@ -129,7 +137,8 @@
 
         /**
          * validation 오류시 출력되는 error message
-         */
+         * @type: String
+         ******/
         errorMessage: {
           type: String
         }
@@ -140,11 +149,11 @@
        */
       openDatePicker: function() {
         var dt = this.value ? new Date(this.value) : new Date();
-        var event = { 
-          dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate }, 
-          callback: this._applySelectedDate 
+        var event = {
+          dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate },
+          callback: this._applySelectedDate
         };
-        
+
         this.fire('things-date-picker-toggle', event);
       },
 

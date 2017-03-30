@@ -1,6 +1,16 @@
 # things-date-picker
 
-An element providing a starting point for your own reusable Polymer elements.
+#### `<things-date-picker>` From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
+
+  Example:
+
+```html
+    <things-date-from-to
+      locale="ko"
+      read-format="YYYY-MM-DD">
+    </things-date-from-to>
+```
+
 
 
 ## Dependencies
