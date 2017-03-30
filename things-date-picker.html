@@ -146,6 +146,7 @@
 
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       ****
        */
       openDatePicker: function() {
         var dt = this.value ? new Date(this.value) : new Date();
@@ -159,7 +160,7 @@
 
       /**
        * things-date-picker-dialog에 전달할 callback 함수
-       *
+       ****
        * @param {Object} dateObj
        */
       _applySelectedDate: function(dataObj) {
@@ -168,6 +169,7 @@
 
       /**
        * 초기화된 데이터를 제거하는 기능
+       ****
        */
       clearField: function() {
         this.value = '';

@@ -212,6 +212,7 @@
 
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       ****
        */
       openFromPicker: function() {
         var dataObj = {
@@ -226,6 +227,7 @@
 
       /**
        * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       ****
        */
       openToPicker: function() {
         var dataObj = {
@@ -241,6 +243,7 @@
       /**
        * things-date-picker-dialog에 전달할 callback 함수
        * selectedFromDate를 초기화 하고 dialogValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
+       ****
        */
       _applyFromDate: function(dataObj) {
         this.selectedFromDate = dataObj.date;
@@ -251,6 +254,7 @@
       /**
        * things-date-picker-dialog에 전달할 callback 함수
        * selectedToDate를 초기화 하고 dialogValidation 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
+       ****
        */
       _applyToDate: function(dataObj) {
         this.selectedToDate = dataObj.date;
@@ -260,6 +264,7 @@
 
       /**
        * from date와 to date 간의 범위 validation check, valid = true return, invalid = false return
+       ****
        */
       dialogValidation: function() {
         if(this.selectedFromDate && this.selectedToDate && this.selectedFromDate > this.selectedToDate)  {
@@ -272,6 +277,7 @@
 
       /**
        * 선택된 from date를 빈값으로 초기화하며 inputfield의 vaild를 true로 설정
+       ****
        */
       clearFrom: function() {
         this.selectedFromDate = '';
@@ -279,6 +285,7 @@
 
       /**
        * 선택된 to date를 빈값으로 초기화며 inputfield의 vaild를 true로 설정
+       ****
        */
       clearTo: function() {
         this.selectedToDate = '';
@@ -288,6 +295,7 @@
        * From Date 선택시 - value 변경
        * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
        * allowRange가 있다면 toValidateion함수를 호출 합니다.
+       ****
        */
       _selectedFromDateChanged: function(date) {
         this.selectedFromDate = this.formatting(date);
@@ -309,6 +317,7 @@
        * To Date 선택시 - value 변경
        * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
        * allowRange가 있다면 toValidateion함수를 호출 합니다.
+       ****
        */
       _selectedToDateChanged: function(date) {
         this.selectedToDate = this.formatting(date);
@@ -330,6 +339,7 @@
        * allowRange가 있을 경우 발생합니다.
        * 입력받은 fromDate가 toDate와 비교하여 허용범위 안에 있는지를 계산하고
        * 범위 밖일 경우 fromValid를 false로 리턴하여 errorMessage를 출력
+       ****
        */
       fromValidation: function() {
         if(this.selectedFromDate && this.selectedToDate) {
