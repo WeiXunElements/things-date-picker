@@ -1,0 +1,275 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../things-input-field/things-input-field.html">
+<link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html">
+<link rel="import" href="../things-global-behavior/things-global-behavior.html">
+
+<link rel="import" href="things-date-picker-dialog.html">
+
+<!--
+`<things-date-time-picker>` Things Date Time Picker
+
+  Example
+
+    <things-date-time-picker
+      label="Date Time"
+      locale="ko"
+      read-format="YYYY-MM-DD hh:mm:ss">
+    </things-date-time-picker>
+
+@demo demo/index.html
+-->
+
+<dom-module id="things-date-time-picker">
+  <template>
+    <style>
+      things-input-field::shadow input{
+        @apply(--things-input);
+        width:calc(30% - 37px);
+      }
+      paper-icon-button.clear{
+        @apply(--things-small-icon);
+        margin-right:7px;margin-left:-27px;
+        opacity:.4;
+        position:relative;
+        top:-2px;
+      }
+      paper-icon-button.picker{
+        @apply(--things-picker-button);
+        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top:1px;
+      }
+    </style>
+
+    <things-input-field
+      label="[[label]]"
+      type="text"
+      value="[[selectedDate]]"
+      validator="[[validator]]"
+      auto-validate="[[autoValidate]]"
+      error-message="[[errorMessage]]"
+      readonly>
+    </things-input-field>
+
+    <paper-icon-button class="clear" icon="clear" on-tap="clearDateField"></paper-icon-button>
+    <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
+
+    <things-input-field
+      type="text"
+      value="{{selectedTime}}"
+      validator="[[validator]]"
+      auto-validate="[[autoValidate]]"
+      error-message="[[errorMessage]]"
+      hide-label
+      readonly>
+    </things-input-field>
+
+    <paper-icon-button class="clear" icon="clear" on-tap="clearTimeField"></paper-icon-button>
+    <paper-icon-button class="picker" on-tap="showTimePicker"></paper-icon-button>
+
+    <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
+      <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
+      <div class="buttons">
+        <paper-button raised dialog-confirm on-tap="selectTime">Select</paper-button>
+        <paper-button raised dialog-dismiss>Cancel</paper-button>
+      </div>
+    </paper-dialog>
+
+    <input
+      is="iron-input"
+      id="input"
+      name="[[name]]"
+      value="[[value]]"
+      bind-value="[[value]]"
+      hidden></input>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'things-date-time-picker',
+
+      behaviors: [
+        Things.GlobalBehavior,
+        Things.MsgBoxBehavior
+      ],
+
+      properties: {
+        /**
+         * Date picker의 기준이 되는 locale을 설정한다.
+         * @type: String
+         ******/
+        locale: {
+          type: String,
+          value: 'en'
+        },
+
+        /**
+         * date의 읽기전용 format을 설정한다.
+         * @type: String
+         ******/
+        readFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date의 쓰기전용 format을 설정한다.
+         * @type: String
+         ******/
+        writeFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date value
+         * @type: String
+         ******/
+        value: {
+          type: String,
+          notify: true
+        },
+
+        /**
+         * minimum date
+         * @type: Date
+         ******/
+        minDate: {
+          type: Date
+        },
+
+        /**
+         * maximum date
+         * @type: Date
+         ******/
+        maxDate: {
+          type: Date
+        },
+
+        /**
+         * input field에서 사용할 validator name
+         * @type: String
+         ******/
+        validator: {
+          type: String
+        },
+
+        /**
+         * input field의 auto vaidation 여부
+         * @type: Boolean
+         ******/
+        autoValidate: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * validation 오류시 출력되는 error message
+         * @type: String
+         ******/
+        errorMessage: {
+          type: String
+        }
+      },
+
+      observers: [
+        '_dateValueChanged(selectedDate)',
+        '_timeValueChanged(selectedTime)'
+      ],
+
+      /**
+       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+       ****
+       */
+      openDatePicker: function() {
+        var dt = this.selectedDate ? new Date(this.selectedDate) : new Date();
+        var event = {
+          dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate },
+          callback: this._applySelectedDate
+        };
+
+        this.fire('things-date-picker-toggle', event);
+      },
+
+      /**
+       * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
+      ****
+       */
+      showTimePicker: function() {
+        this.$.timeDialog.toggle();
+      },
+
+      /**
+       * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
+      ****
+       */
+      selectTime: function() {
+        this.selectedTime = this.time;
+      },
+
+      /**
+       * things-date-picker-dialog에 전달할 callback 함수
+       ****
+       * @param {Object} dateObj
+       */
+      _applySelectedDate: function(dataObj) {
+        this.selectedDate = dataObj.date;
+      },
+
+      /**
+       * 초기화된 데이터를 제거하는 기능
+       ****
+       */
+      clearDateField: function() {
+        this.selectedDate = '';
+      },
+
+      /**
+       * 초기화된 데이터를 제거하는 기능
+      ****
+       */
+      clearTimeField: function() {
+        this.selectedTime = '';
+      },
+
+      /**
+       * 날짜가 변경 됐을 경우, value에 값 전달
+       ****
+       * @param {Object} selectedDate
+       */
+      _dateValueChanged: function(selectedDate) {
+        this._convertDateTimeValue(selectedDate, this.selectedTime);
+      },
+
+      /**
+       * 시간이 변경 됐을 경우, value에 값 전달
+       ****
+       * @param {Object} selectedTime
+       */
+      _timeValueChanged: function(selectedTime) {
+         this._convertDateTimeValue(this.selectedDate, selectedTime);
+      },
+
+      /**
+       * 날짜와 시간을 YYYY-MM-DD HH24:MI 형태 문자값으로 변환
+       ****
+       * @param {String} selectedDate
+       * @param {String} selectedTime
+       */
+      _convertDateTimeValue: function(selectedDate, selectedTime) {
+        if(!selectedDate || selectedDate == '') {
+          this.$.input.value = '';
+          return;
+        }
+
+        if(!selectedTime || selectedTime == '') {
+          selectedTime = '00:00:00';
+        }
+
+        var date = moment(selectedDate + ' ' + selectedTime);
+        var formattedTime = date.format(this.writeFormat);
+        this.$.input.value = formattedTime;
+      }
+    });
+  </script>
+</dom-module>

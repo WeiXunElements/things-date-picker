@@ -42,10 +42,16 @@
     </style>
 
     <things-input-field
-      label="[[label]]"
+      hidden
       type="text"
       name="[[name]]"
-      value="[[value]]"
+      value="{{value}}">
+    </things-input-field>
+
+    <things-input-field
+      label="[[label]]"
+      type="text"
+      value="[[displayValue]]"
       validator="[[validator]]"
       auto-validate="[[autoValidate]]"
       error-message="[[errorMessage]]"
@@ -94,12 +100,30 @@
         },
 
         /**
-         * date value
+         * date 표시를 위한 문자열 값
+         * @type: String
+         ******/
+        displayValue: {
+          type: String
+        },
+
+        /**
+         * date 문자열 실제 값
          * @type: String
          ******/
         value: {
           type: String,
-          notify: true
+          notify: true,
+          observer: '_valueChanged'
+        },
+
+        /**
+         * date value
+         * @type: Object
+         ******/
+        dateValue: {
+          type: Object,
+          observer: '_dateValueChanged'
         },
 
         /**
@@ -141,7 +165,62 @@
          ******/
         errorMessage: {
           type: String
+        },
+
+        /**
+         * value가 먼저 변경되었는 지, dateValue가 먼저 변경되었는 지 모드
+         * @type: Boolean
+         *********
+         */
+        changeMode: {
+          type: String,
+          value: ''
         }
+      },
+
+      /**
+       * dateValue 값이 변경되었을 때 ...
+       ****
+       * @param {Object} dateValue
+       */
+      _dateValueChanged: function(dateValue) {
+        // 1. value가 먼저 변경된 경우 이면 그냥 종료
+        if(this.changeMode == 'value') {
+          this.changeMode = '';
+
+        // 2. dateValue가 먼저 변경된 경우이면 displayValue, value를 설정
+        } else {
+          this.changeMode = 'dateValue';
+          this.displayValue = dateValue ? moment(dateValue).format(this.readFormat) : '';
+          this.value = dateValue ? moment(dateValue).format(this.writeFormat) : '';
+        }
+      },
+
+      /**
+       * value 값이 변경되었을 때 ...
+       ****
+       * @param {String} value
+       */
+      _valueChanged: function(value) {
+        // 1. dateValue가 먼저 변경된 경우 그냥 종료
+        if(this.changeMode == 'dateValue') {
+          this.changeMode = '';
+
+        // 2. value가 먼저 변경된 경우 dateValue를 설정
+        } else {
+          this.changeMode = 'value';
+          this.dateValue = (value && value != '') ? moment(value) : null;
+          this.displayValue = this.dateValue ? moment(this.dateValue).format(this.readFormat) : '';
+        }
+      },
+
+      /**
+       * things-date-picker-dialog에 전달할 callback 함수
+       ****
+       * @param {Object} dateObj
+       */
+      _applySelectedDate: function(dateObj) {
+        this.dateValue = dateObj.date;
       },
 
       /**
@@ -149,7 +228,7 @@
        ****
        */
       openDatePicker: function() {
-        var dt = this.value ? new Date(this.value) : new Date();
+        var dt = this.dateValue ? this.dateValue : new Date();
         var event = {
           dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate },
           callback: this._applySelectedDate
@@ -159,20 +238,11 @@
       },
 
       /**
-       * things-date-picker-dialog에 전달할 callback 함수
-       ****
-       * @param {Object} dateObj
-       */
-      _applySelectedDate: function(dataObj) {
-        this.value = dataObj.date;
-      },
-
-      /**
        * 초기화된 데이터를 제거하는 기능
        ****
        */
       clearField: function() {
-        this.value = '';
+        this.dateValue = null;
       }
     });
   </script>

@@ -1,10 +1,10 @@
 {
   "name": "things-date-picker",
-  "version": "v2.0.1",
+  "version": "v2.0.2",
   "authors": [
     "Hatio Lab. <heartyoh@hatiolab.com>"
   ],
-  "description": "시간(Time) Picker and Date(날짜) Pickger 범위 (things-date-from-to).",
+  "description": "Date(날짜) Picker, 날짜 범위 Picker, Date Time(날짜 시간) Picker",
   "keywords": [
     "web-component",
     "polymer",
