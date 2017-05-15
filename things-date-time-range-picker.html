@@ -1,0 +1,242 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
+
+<link rel="import" href="../things-button/things-button.html">
+<link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html">
+<link rel="import" href="../things-input-field/things-input-field.html">
+
+<link rel="import" href="./things-date-time-picker.html">
+
+<!--
+`<things-date-time-range-picker>` From Datetime과 To Datetime을 입력받아 기간을 표현하는 컴퍼넌트
+
+  Example
+
+    <things-date-time-range-picker
+      locale="ko"
+      name="datetime"
+      label="Date"
+      read-format="YYYY-MM-DD HH:mm:ss"
+      write-format="YYYY-MM-DD HH:mm:ss">
+    </things-date-time-range-picker>
+
+@demo demo/demo-things-date-time-range-picker.html
+-->
+<dom-module id="things-date-time-range-picker">
+  <template>
+    <style>
+      .input-fieldset {
+        @apply(--layout-flex)
+      }
+      things-input-field::shadow label {
+      }
+      things-input-field::shadow input {
+        width:calc(65% - 37px)
+      }
+      paper-icon-button.clear {
+        @apply(--things-small-icon);
+        margin-left:-26px;
+        margin-right:6px;
+        opacity:.4;
+        position:relative;
+        top:-2px;
+      }
+      paper-icon-button.picker {
+        @apply(--things-picker-button);
+        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top:1px;
+      }
+    </style>
+
+    <things-input-field hidden name="[[name]]" value="[[value]]"></things-input-field>
+
+    <div class="layout horizontal">
+      <!-- from datetime -->
+      <div class="input-fieldset">
+        <things-date-time-picker 
+          id="from-date-time"
+          label="[[fromLabel]]"
+          read-format="[[readFormat]]"
+          write-format="[[writeFormat]]"
+          value="{{fromValue}}">
+        </things-date-time-picker>
+      </div>
+
+      <!-- to datetime -->
+      <div class="input-fieldset">
+        <things-date-time-picker 
+          id="to-date-time"
+          label="[[toLabel]]"
+          read-format="[[readFormat]]"
+          write-format="[[writeFormat]]"
+          value="{{toValue}}">
+        </things-date-time-picker>        
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'things-date-time-range-picker',
+
+      behaviors: [
+        Things.MsgBoxBehavior
+      ],
+
+      properties: {
+        /**
+         * Name
+         * @type: String
+         ******/
+        name: {
+          type: String
+        },
+
+        /**
+         * label name
+         * @type: String
+         ******/
+        label: {
+          type: String,
+          observer: '_labelChanged'
+        },
+
+        /**
+         * from field label name
+         * @type: String
+         ******/
+        fromLabel: {
+          type: String,
+          value: 'From'
+        },
+
+        /**
+         * to field label name
+         * @type: String
+         ******/
+        toLabel: {
+          type: String,
+          value: 'To'
+        },
+
+        /**
+         * Date picker의 기준이 되는 locale을 설정한다.
+         * @type: String
+         ******/
+        locale: {
+          type: String,
+          notify: true,
+          value: 'en'
+        },
+
+        /**
+         * date의 읽기전용 format을 설정한다.
+         * @type: String
+         ******/
+        readFormat: {
+          type: String,
+          notify: true,
+          value: 'YYYY-MM-DD HH:mm:ss'
+        },
+
+        /**
+         * date의 쓰기전용 format을 설정한다.
+         * @type: String
+         ******/
+        writeFormat: {
+          type: String,
+          value: 'YYYY-MM-DD HH:mm:ss'
+        },
+
+        /**
+         * From Date Time Picker 값과 바인딩 
+         * @type: String
+         ******/
+        fromValue: {
+          type: String
+        },
+
+        /**
+         * To Date Time Picker 값과 바인딩 
+         * @type: String
+         ******/
+        toValue: {
+          type: String
+        },        
+
+        /**
+         * Form Submit시에 넘어갈 값 ex) 2015-05-01,2016-05-31
+         * @type: String
+         ******/
+        value: {
+          type: String
+        },
+
+        /**
+         * from - to picker 사이의 선택 가능 일수 (허용 범위)
+         * @type: Number
+         ******/
+        allowRange: {
+          type: Number
+        },
+
+        /**
+         * input field의 입력된 값이 allowRange에 부함하지 않을 경우 나타나는 메시지
+         * @type: String
+         ******/
+        errorMessage: {
+          type: String
+        }
+      },
+
+      listeners: {
+        'from-date-time.things-datetime-pick-changed' : 'fromValueChanged',
+        'to-date-time.things-datetime-pick-changed' : 'toValueChanged'
+      },
+
+      /**
+       * label을 property로 받아서 fromLabel과 toLabel을 초기화
+       ******
+       * @param {String} label
+       */
+      _labelChanged: function(label) {
+        this.fromLabel = label + ' (From)';
+        this.toLabel = label + ' (To)';
+      },
+
+      /**
+       * fromValue가 변경된 이 후 ...
+       ******
+       * @param {Object} event
+       */
+      fromValueChanged: function(event) {
+        this.fromValue = event.detail;
+        this.fromToValueChanged(this.fromValue, this.toValue);
+      },
+
+      /**
+       * toValue가 변경된 이 후 ...
+       ******
+       * @param {Object} event
+       */
+      toValueChanged: function(event) {
+        this.toValue = event.detail;
+        this.fromToValueChanged(this.fromValue, this.toValue);
+      },
+
+      /**
+       * fromValue 혹은 toValue가 변경된 이 후 ...
+       ******
+       * @param {String} fromValue
+       * @param {String} toValue
+       */
+      fromToValueChanged: function(fromValue, toValue) {
+        if(!fromValue) fromValue = '';
+        if(!toValue) toValue = '';
+        this.value = fromValue + ',' + toValue;
+      }
+    });
+  </script>
+</dom-module>
