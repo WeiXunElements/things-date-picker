@@ -259,6 +259,8 @@
       _convertDateTimeValue: function(selectedDate, selectedTime) {
         if(!selectedDate || selectedDate == '') {
           this.$.input.value = '';
+          // fire event
+          this.fire('things-datetime-pick-changed', '');
           return;
         }
 

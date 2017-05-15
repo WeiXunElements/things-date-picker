@@ -235,7 +235,7 @@
       fromToValueChanged: function(fromValue, toValue) {
         if(!fromValue) fromValue = '';
         if(!toValue) toValue = '';
-        this.value = fromValue + ',' + toValue;
+        this.value = (fromValue == '' && toValue == '') ? '' : fromValue + ',' + toValue;
       }
     });
   </script>
