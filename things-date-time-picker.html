@@ -269,6 +269,9 @@
         var date = moment(selectedDate + ' ' + selectedTime);
         var formattedTime = date.format(this.writeFormat);
         this.$.input.value = formattedTime;
+
+        // fire event
+        this.fire('things-datetime-pick-changed', formattedTime);
       }
     });
   </script>
