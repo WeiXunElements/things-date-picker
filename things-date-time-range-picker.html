@@ -55,24 +55,26 @@
     <div class="layout horizontal">
       <!-- from datetime -->
       <div class="input-fieldset">
-        <things-date-time-picker 
+        <things-date-time-picker
           id="from-date-time"
           label="[[fromLabel]]"
-          read-format="[[readFormat]]"
           write-format="[[writeFormat]]"
+          selected-date="{{fromDate}}"
+          selected-time="{{fromTime}}"
           value="{{fromValue}}">
         </things-date-time-picker>
       </div>
 
       <!-- to datetime -->
       <div class="input-fieldset">
-        <things-date-time-picker 
+        <things-date-time-picker
           id="to-date-time"
           label="[[toLabel]]"
-          read-format="[[readFormat]]"
           write-format="[[writeFormat]]"
+          selected-date="{{toDate}}"
+          selected-time="{{toTime}}"
           value="{{toValue}}">
-        </things-date-time-picker>        
+        </things-date-time-picker>
       </div>
     </div>
   </template>
@@ -87,7 +89,7 @@
 
       properties: {
         /**
-         * Name
+         * form field name
          * @type: String
          ******/
         name: {
@@ -135,10 +137,18 @@
          * date의 읽기전용 format을 설정한다.
          * @type: String
          ******/
-        readFormat: {
+        readDateFormat: {
           type: String,
-          notify: true,
-          value: 'YYYY-MM-DD HH:mm:ss'
+          value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * time의 읽기전용 format을 설정한다.
+         * @type: String
+         ******/
+        readTimeFormat: {
+          type: String,
+          value: 'HH:mm:ss'
         },
 
         /**
@@ -151,7 +161,57 @@
         },
 
         /**
-         * From Date Time Picker 값과 바인딩 
+         * 초기 fromDate 값
+         * @type: Date
+         ******/
+        initFromDate: {
+          type: Date
+        },
+
+        /**
+         * 초기 toDate 값
+         * @type: Date
+         ******/
+        initToDate: {
+          type: Date
+        },
+
+        /**
+         * from date 값
+         * @type: Date
+         ******/
+        fromDate: {
+          type: String,
+          notify: true
+        },
+
+        /**
+         * from time 값
+         * @type: String
+         ******/
+        fromTime: {
+          type: String,
+          notify: true
+        },
+
+        /**
+         * to date 초기값
+         * @type: Date
+         ******/
+        toDate: {
+          type: String
+        },
+
+        /**
+         * to time 초기값
+         * @type: String
+         ******/
+        toTime: {
+          type: String
+        },
+
+        /**
+         * From Date Time Picker 값과 바인딩
          * @type: String
          ******/
         fromValue: {
@@ -159,12 +219,12 @@
         },
 
         /**
-         * To Date Time Picker 값과 바인딩 
+         * To Date Time Picker 값과 바인딩
          * @type: String
          ******/
         toValue: {
           type: String
-        },        
+        },
 
         /**
          * Form Submit시에 넘어갈 값 ex) 2015-05-01,2016-05-31
@@ -191,10 +251,16 @@
         }
       },
 
-      listeners: {
-        'from-date-time.things-datetime-changed' : 'fromValueChanged',
-        'to-date-time.things-datetime-changed' : 'toValueChanged'
-      },
+      observers: [
+        'initFromDateChanged(initFromDate)',
+        'initToDateChanged(initToDate)',
+        'fromDateChanged(fromDate)',
+        'fromTimeChanged(fromTime)',
+        'toDateChanged(toDate)',
+        'toTimeChanged(toTime)',
+        'fromValueChanged(fromValue)',
+        'toValueChanged(toValue)',
+      ],
 
       /**
        * label을 property로 받아서 fromLabel과 toLabel을 초기화
@@ -207,23 +273,111 @@
       },
 
       /**
-       * fromValue가 변경된 이 후 ...
+       * from Datetime 초기값이 변경된 경우
        ******
-       * @param {Object} event
+       * @param {Date} initFromDate
        */
-      fromValueChanged: function(event) {
-        this.fromValue = event.detail;
-        this.fromToValueChanged(this.fromValue, this.toValue);
+      initFromDateChanged: function(initFromDate) {
+        if(initFromDate) {
+          this.fromDate = moment(initFromDate).format(this.readDateFormat);
+          this.fromTime = moment(initFromDate).format(this.readTimeFormat);
+          this.fromValue = moment(initFromDate).format(this.writeFormat);
+        }
       },
 
       /**
-       * toValue가 변경된 이 후 ...
+       * to Datetime 초기값이 변경된 경우
        ******
-       * @param {Object} event
+       * @param {Date} initToDate
        */
-      toValueChanged: function(event) {
-        this.toValue = event.detail;
-        this.fromToValueChanged(this.fromValue, this.toValue);
+      initToDateChanged: function(initToDate) {
+        if(initToDate) {
+          this.toDate = moment(initToDate).format(this.readDateFormat);
+          this.toTime = moment(initToDate).format(this.readTimeFormat);
+          this.toValue = moment(initToDate).format(this.writeFormat);
+        }
+      },
+
+      /**
+       * fromDate 변경시
+       ******
+       * @param {String} fromDate
+       */
+      fromDateChanged: function(fromDate) {
+        if(!fromDate) {
+          this.fromValue = '';
+        } else {
+          var fromTimeStr = this.fromTime ? this.fromTime : '00:00:00';
+          var fromDateStr = fromDate + ' ' + fromTimeStr;
+          var fromDate = new Date(fromDateStr);
+          this.fromValue = moment(fromDate).format(this.writeFormat);
+        }
+      },
+
+      /**
+       * fromTime 변경시
+       ******
+       * @param {String} fromTime
+       */
+      fromTimeChanged: function(fromTime) {
+        if(!this.fromDate) {
+          this.fromValue = '';
+        } else {
+          var fromTimeStr = fromTime ? fromTime : '00:00:00';
+          var fromDateStr = this.fromDate + ' ' + fromTimeStr;
+          var fromDate = new Date(fromDateStr);
+          this.fromValue = moment(fromDate).format(this.writeFormat);
+        }
+      },
+
+      /**
+       * toDate 변경시
+       ******
+       * @param {String} toDate
+       */
+      toDateChanged: function(toDate) {
+        if(!toDate) {
+          this.toValue = '';
+        } else {
+          var toTimeStr = this.toTime ? this.toTime : '00:00:00';
+          var toDateStr = toDate + ' ' + toTimeStr;
+          var toDate = new Date(toDateStr);
+          this.toValue = moment(toDate).format(this.writeFormat);
+        }
+      },
+
+      /**
+       * toTime 변경시
+       ******
+       * @param {String} toTime
+       */
+      toTimeChanged: function(toTime) {
+        if(!this.toDate) {
+          this.toValue = '';
+        } else {
+          var toTimeStr = toTime ? toTime : '00:00:00';
+          var toDateStr = this.toDate + ' ' + toTimeStr;
+          var toDate = new Date(toDateStr);
+          this.toValue = moment(toDate).format(this.writeFormat);
+        }
+      },
+
+      /**
+       * fromValue 변경 이 후
+       ******
+       * @param {String} fromValue
+       */
+      fromValueChanged: function(fromValue) {
+        this.fromToValueChanged(fromValue, this.toValue);
+      },
+
+      /**
+       * toValue 변경 이 후
+       ******
+       * @param {String} toValue
+       */
+      toValueChanged: function(toValue) {
+        this.fromToValueChanged(this.fromValue, toValue);
       },
 
       /**

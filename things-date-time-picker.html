@@ -44,7 +44,7 @@
     <things-input-field
       label="[[label]]"
       type="text"
-      value="[[selectedDate]]"
+      value="{{selectedDate}}"
       validator="[[validator]]"
       auto-validate="[[autoValidate]]"
       error-message="[[errorMessage]]"
@@ -95,7 +95,7 @@
 
       properties: {
         /**
-         * Date picker의 기준이 되는 locale을 설정한다.
+         * date picker의 기준이 되는 locale을 설정한다.
          * @type: String
          ******/
         locale: {
@@ -107,9 +107,18 @@
          * date의 읽기전용 format을 설정한다.
          * @type: String
          ******/
-        readFormat: {
+        readDateFormat: {
           type: String,
           value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * time의 읽기전용 format을 설정한다.
+         * @type: String
+         ******/
+        readTimeFormat: {
+          type: String,
+          value: 'HH:mm:ss'
         },
 
         /**
@@ -119,6 +128,24 @@
         writeFormat: {
           type: String,
           value: 'YYYY-MM-DD'
+        },
+
+        /**
+         * date 표시 값
+         * @type: String
+         ******/
+        selectedDate: {
+          type: String,
+          notify: true
+        },
+
+        /**
+         * time 표시 값
+         * @type: String
+         ******/
+        selectedTime: {
+          type: String,
+          notify: true
         },
 
         /**
@@ -226,7 +253,7 @@
 
       /**
        * 초기화된 데이터를 제거하는 기능
-      ****
+       ****
        */
       clearTimeField: function() {
         this.selectedTime = '';
