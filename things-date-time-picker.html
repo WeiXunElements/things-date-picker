@@ -23,9 +23,37 @@
 <dom-module id="things-date-time-picker">
   <template>
     <style>
+      :host {
+        display: block;
+      }
       things-input-field::shadow input{
         @apply(--things-input);
-        width:calc(30% - 37px);
+        width:calc(31% - 37px);
+      }
+      @media (max-width: 840px){
+        things-input-field::shadow input{
+          width:calc(30% - 37.5px) !important;
+        }
+      }
+      @media (min-width: 841px) and (max-width: 1024px){
+        things-input-field::shadow input{
+          width:calc(31% - 38.5px) !important;
+        }
+      }
+      @media (min-width: 1300px) and (max-width: 1499px){
+        things-input-field::shadow input{
+          width:calc(31.2% - 37px) !important;
+        }
+      }
+      @media (min-width: 1500px) and (max-width: 1799px){
+        things-input-field::shadow input{
+          width:calc(31.5% - 37px) !important;
+        }
+      }
+      @media (min-width: 1800px) and (max-width: 2099px){
+        things-input-field::shadow input{
+          width:calc(31.6% - 37px) !important;
+        }
       }
       paper-icon-button.clear{
         @apply(--things-small-icon);
