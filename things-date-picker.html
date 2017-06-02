@@ -49,6 +49,7 @@
     </things-input-field>
 
     <things-input-field
+      id="date-field"
       label="[[label]]"
       type="text"
       value="[[displayValue]]"
@@ -58,7 +59,7 @@
       readonly>
     </things-input-field>
 
-    <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
+    <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
     <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
   </template>
 
@@ -175,6 +176,17 @@
         changeMode: {
           type: String,
           value: ''
+        },
+
+        /**
+         * 검색폼의 입력값이 필수 값인지 여부를 결정
+         * 필수 값으로 설정되면 clear버튼을 숨긴다.
+         * @type Boolean
+         */
+        required: {
+          type: Boolean,
+          value: false,
+          observer: '_requiredChanged'
         }
       },
 
@@ -235,6 +247,15 @@
         };
 
         this.fire('things-date-picker-toggle', event);
+      },
+
+      /**
+       * 검색 필드의 값이 필수 값일 때 (required가 true일 때)
+       * clear 버튼을 숨긴고 field의 required attribute를 추가하여 valdation 할 수 있도록 변경
+       */
+      _requiredChanged: function(required) {
+        this.$['date-field'].setAttribute('required', true);
+        this.hideClearBtn = required;
       },
 
       /**
