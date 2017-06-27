@@ -1,9 +1,20 @@
 # things-date-picker
-
-#### `<things-date-picker>` From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
+## 프로그램에 설정한 포멧에 따라 날짜를 입력받아 시간을 표현하는 컴포넌트
 
   Example:
 
+```html
+    <things-date-picker
+      label="Date Picker"
+      locale="ko"
+      read-format="YYYY-MM-DD">
+    </things-date-picker>
+```
+
+# things-date-from-to
+## From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
+
+Example:
 ```html
     <things-date-from-to
       locale="ko"
@@ -11,7 +22,42 @@
     </things-date-from-to>
 ```
 
+# things-date-time-picker
+## 프로그램에 설정한 포멧에 따라 Date Time을 입력받아 시간을 표현하는 컴포넌트
 
+Example:
+```html
+    <things-date-time-picker
+      label="Date Time"
+      locale="ko"
+      read-format="YYYY-MM-DD hh:mm:ss">
+    </things-date-time-picker>
+```
+
+# things-time-picker
+## 프로그램에 설정한 포멧에 따라 Time을 입력받아 시간을 표현하는 컴포넌트
+
+Example:
+```html
+    <things-time-picker
+      label="Time Picker"
+      read-format="hh:mm:ss">
+    </things-time-picker>
+```
+
+# things-date-time-range-picker
+## From Datetime과 To Datetime을 입력받아 기간을 표현하는 컴퍼넌트
+
+Example:
+```html
+    <things-date-time-range-picker
+      locale="ko"
+      name="datetime"
+      label="Date"
+      read-format="YYYY-MM-DD HH:mm:ss"
+      write-format="YYYY-MM-DD HH:mm:ss">
+    </things-date-time-range-picker>
+```
 
 ## 2. 개발
 ### 2.1 Polymer-CLI 설치
