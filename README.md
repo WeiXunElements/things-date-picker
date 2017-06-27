@@ -1,5 +1,5 @@
 # things-date-picker
-## 프로그램에 설정한 포멧에 따라 날짜를 입력받아 시간을 표현하는 컴포넌트
+## It is a component that displays the time by receiving the date according to the format set in the program.
 
   Example:
 
@@ -12,7 +12,7 @@
 ```
 
 # things-date-from-to
-## From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
+## It is a component that displays the period by receiving From Date and To Date.
 
 Example:
 ```html
@@ -23,7 +23,7 @@ Example:
 ```
 
 # things-date-time-picker
-## 프로그램에 설정한 포멧에 따라 Date Time을 입력받아 시간을 표현하는 컴포넌트
+## It is a component that displays the time by receiving Date Time according to the format set in the program.
 
 Example:
 ```html
@@ -35,7 +35,7 @@ Example:
 ```
 
 # things-time-picker
-## 프로그램에 설정한 포멧에 따라 Time을 입력받아 시간을 표현하는 컴포넌트
+## It is a component that displays the time by receiving Time according to the format set in the program.
 
 Example:
 ```html
@@ -46,7 +46,7 @@ Example:
 ```
 
 # things-date-time-range-picker
-## From Datetime과 To Datetime을 입력받아 기간을 표현하는 컴퍼넌트
+## It is a component that displays the period by receiving From Datetime and To Datetime.
 
 Example:
 ```html
@@ -59,38 +59,37 @@ Example:
     </things-date-time-range-picker>
 ```
 
-## 2. 개발
-### 2.1 Polymer-CLI 설치
+## 2. Development
+### 2.1 Install Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
-### 2.2 Application 수행
+### 2.2 Run Application
 
 ```
 $ polymer serve
 ```
 
-### 2.3 Application 빌드
+### 2.3 Build Application
 
 ```
 $ polymer build
 ```
 
-아래 명령어로 ` build/bundled`나 ` build/unbundled`에서 서버를 띄울수 있다.
+You can launch the server from `build/bundled` or `build/unbundled` with the following command:
 
 ```
 $ polymer serve build/bundled
 ```
 
-### 2.3 Running Tests
+### 2.4 Run Tests
 
 ```
 $ polymer test
 ```
 
-테스트는 [web-component-tester](https://github.com/Polymer/web-component-tester)에서 설명한데로 설정완료됨.
-아래 명령어로 테스트를 수행할 수 있다.
+The test has been set up as described in [web-component-tester](https://github.com/Polymer/web-component-tester).
+You can run the test with the following command.
 ```
 $ polymer test
 ```
-`<things-date-from-to>` From Date와 To Date를 입력받아 기간을 표현하는 컴퍼넌트
