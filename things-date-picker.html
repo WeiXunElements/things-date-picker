@@ -62,9 +62,10 @@ Copyright © HatioLab Inc. All rights reserved.
       error-message="[[errorMessage]]"
       readonly>
     </things-input-field>
-
-    <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
-    <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
+    <template is="dom-if" if="{{readonly}}">
+      <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
+      <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
+    <template >
   </template>
 
   <script>
