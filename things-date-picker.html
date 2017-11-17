@@ -243,6 +243,7 @@ Copyright © HatioLab Inc. All rights reserved.
        * @param {Object} dateObj
        */
       _applySelectedDate: function(dateObj) {
+        this.changeMode = 'dateValue'
         this.dateValue = dateObj.date;
       },
 
@@ -274,6 +275,7 @@ Copyright © HatioLab Inc. All rights reserved.
        ****
        */
       clearField: function() {
+        this.changeMode = 'dateValue'
         this.dateValue = null;
       }
     });
