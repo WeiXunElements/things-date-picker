@@ -232,7 +232,7 @@ Copyright © HatioLab Inc. All rights reserved.
         // 2. value가 먼저 변경된 경우 dateValue를 설정
         } else {
           this.changeMode = 'value';
-          this.dateValue = (value && value != '') ? moment(value) : null;
+          this.dateValue = (value && value != '') ? moment(value).todate() : null;
           this.displayValue = this.dateValue ? moment(this.dateValue).format(this.readFormat) : '';
         }
       },
