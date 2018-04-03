@@ -223,7 +223,7 @@
                             this.value = displayValue;
                         }
                         break;
-
+                        
                     case 'HHmm':
                         if (displayValue.indexOf(':') != -1 && displayValue.length == 5) {
                             this.value = displayValue.substring(0, 2) + displayValue.substring(3);
@@ -231,6 +231,7 @@
                             this.value = displayValue;
                         }
                         break;
+
                     default:
                         this.value = displayValue;
                         break;
@@ -247,10 +248,14 @@
                     this.isValid = this.$['time-input'].validate();
                 }
 
-                if (value.indexOf(':') == -1 && value.length == 4) {
-                    this.displayValue = value.substring(0, 2) + ':' + value.substring(2);
+                if (value) {
+                    if (value.indexOf(':') == -1 && value.length == 4) {
+                        this.displayValue = value.substring(0, 2) + ':' + value.substring(2);
+                    } else {
+                        this.displayValue = value;
+                    }
                 } else {
-                    this.displayValue = value;
+                    this.displayValue = '';
                 }
             },
 
