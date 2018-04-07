@@ -1,0 +1,303 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../things-i18n-msg/things-i18n-msg.html">
+<link rel="import" href="../things-global-behavior/things-global-behavior.html">
+<link rel="import" href="../iron-input/iron-input.html">
+
+<dom-module id="things-time-input">
+    <template>
+        <style>
+            label {
+                @apply(--things-label);
+            }
+            input {
+                @apply(--things-input);
+            }
+            input:focus {
+                outline:none;
+            }
+            .hint:before {
+                @apply(--things-hint-arrow);
+            }
+            .hint {
+                @apply(--things-hint);
+            }
+        </style>
+
+        <things-i18n-msg
+            auto
+            msgid="text.invalid_input"
+            msg="{{errorMessage}}" hidden>
+            Invalid Input
+        </things-i18n-msg>
+
+        <label hidden="[[hideLabel]]">[[label]]</label>
+
+        <input is="iron-input" id="time-input"
+            name="[[name]]"
+            type="time"
+            bind-value="{{displayValue}}"
+            placeholder="[[placeholder]]"
+            validator="[[validator]]"
+            required$="[[required]]"
+            hidden="[[hidden]]"
+            readonly$="[[readonly]]"
+            disabled="[[disabled]]"
+            error-message="[[errorMessage]]"
+            auto-validate="[[autoValidate]]"
+            tabindex$="[[tabIndex]]">
+        </input>
+
+        <template is="dom-if" if="[[!isValid]]">
+            <span class="hint">[[errorMessage]]</span>
+        </template>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'things-time-input',
+
+            properties: {
+                /**
+                 * label string
+                 *******
+                 * @type {String}
+                 */
+                label: {
+                    type: String
+                },
+
+                /**
+                 * input field name
+                 *******
+                 * @type {String}
+                 */
+                name: {
+                    type: String
+                },
+
+                displayValue: {
+                    type: String,
+                    notify: true,
+                    observer: '_displayValueChanged'
+                },
+
+                /**
+                 * input field value
+                 *******
+                 * @type {String}
+                 */
+                value: {
+                    type: String,
+                    notify: true,
+                    observer: '_valueChanged'
+                },
+
+                /**
+                 * input field placeholder
+                 *******
+                 * @type {String}
+                 */
+                placeholder: {
+                    type: String
+                },
+
+                /**
+                 * auto validation check flag
+                 *******
+                 * @type {Boolean}
+                 */
+                autoValidate: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * 时间值的格式变量
+                 ******
+                 * @type: String
+                 */
+                formatWith: {
+                    type: String,
+                    value: 'HH:mm'
+                },
+
+                /**
+                 * 通过validate函数判断数据的正确性
+                 * ******
+                 * @type {Boolean}
+                 */
+                isValid: {
+                    type: Boolean,
+                    value: true
+                },
+
+                /**
+                 * input field值为必填项
+                 * ******
+                 * @type {Boolean}
+                 */
+                required: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * input field hidden
+                 * ******
+                 * @type {Boolean}
+                 */
+                hidden: {
+                    type: Boolean,
+                    value: false,
+                    observer: '_hiddenChanged'
+                },
+
+                /**
+                 * input field readonly
+                 * *******
+                 * @type {Boolean}
+                 */
+                readonly: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * input field disabled
+                 * ******
+                 * @type {Boolean}
+                 */
+                disabled: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * 通过validation check，isValid的值为false时显示出来的错误信息
+                 * *******
+                 * @type {String}
+                 */
+                errorMessage: {
+                    type: String
+                },
+
+                /**
+                 * input field的tab Index
+                 * ******
+                 * @type {Number}
+                 */
+                tabIndex: {
+                    type: String
+                },
+
+                /**
+                 * 隐藏label element
+                 *******
+                 * @type {Boolean}
+                 */
+                hideLabel: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            /**
+             * hidden值变更时
+             *******/
+            _hiddenChanged: function(hidden) {
+                if (hidden) {
+                    this.hideLabel = true;
+                }
+            },
+
+            _displayValueChanged: function(displayValue) {
+                if (this.autoValidate) {
+                    this.isValid = this.$['time-input'].validate();
+                }
+
+                switch (this.formatWith) {
+                    case 'HH:mm':
+                        if (displayValue.indexOf(':') == -1 && displayValue.length == 4) {
+                            this.value = displayValue.substring(0, 2)  ':'  displayValue.substring(2);
+                        } else {
+                            this.value = displayValue;
+                        }
+                        break;
+
+                    case 'HHmm':
+                        if (displayValue.indexOf(':') != -1 && displayValue.length == 5) {
+                            this.value = displayValue.substring(0, 2)  displayValue.substring(3);
+                        } else {
+                            this.value = displayValue;
+                        }
+                        break;
+                    default:
+                        this.value = displayValue;
+                        break;
+                }
+            },
+
+            /**
+             * autoValidate为true时，检查绑定的值变化，并调用validate。
+             ******
+             * @param {bindValue} bindValue #### :bindValue변화감지되면 함수실행되여 입력
+             */
+            _valueChanged: function(value) {
+                if (this.autoValidate) {
+                    this.isValid = this.$['time-input'].validate();
+                }
+
+                if (value) {
+                    if (value.indexOf(':') == -1 && value.length == 4) {
+                        this.displayValue = value.substring(0, 2) + ':' + value.substring(2);
+                    } else {
+                        this.displayValue = value;
+                    }
+                 } else {
+                    this.displayValue = '';
+                 }
+            },
+
+            /**
+             * 手动validation check function
+             * *******
+             */
+            validate: function() {
+                this.isValid = this.$['time-input'].validate();
+            },
+
+            /**
+             * focus function
+             *
+             * 2018.03.27 - Updated by CuiGuang
+             * @param {isSelect} isSelect #### :값선택함수 호출 여부
+             * ******
+             */
+            focus: function(isSelect) {
+                this.$['time-input'].focus();
+                if (isSelect) {
+                    this.select();
+                }
+            },
+
+            /**
+             * select function
+             *
+             * 2018.03.27 - Added by CuiGuang
+             *
+             */
+            select: function() {
+                this.$['time-input'].select();
+            },
+
+            /**
+             * tab index
+             * ******
+             * @param {tabIndex} tabIndex #### :tabIndex 설정
+             */
+            setTabindex: function(tabIndex) {
+                this.$['time-input'].setAttribute('tabindex', tabIndex);
+            }
+        });
+    </script>
+</dom-module>
