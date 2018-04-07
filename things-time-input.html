@@ -218,7 +218,7 @@
                 switch (this.formatWith) {
                     case 'HH:mm':
                         if (displayValue.indexOf(':') == -1 && displayValue.length == 4) {
-                            this.value = displayValue.substring(0, 2)  ':'  displayValue.substring(2);
+                            this.value = displayValue.substring(0, 2) + ':' + displayValue.substring(2);
                         } else {
                             this.value = displayValue;
                         }
@@ -226,7 +226,7 @@
 
                     case 'HHmm':
                         if (displayValue.indexOf(':') != -1 && displayValue.length == 5) {
-                            this.value = displayValue.substring(0, 2)  displayValue.substring(3);
+                            this.value = displayValue.substring(0, 2) + displayValue.substring(3);
                         } else {
                             this.value = displayValue;
                         }
