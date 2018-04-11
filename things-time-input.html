@@ -223,7 +223,6 @@
                             this.value = displayValue;
                         }
                         break;
-                        
                     case 'HHmm':
                         if (displayValue.indexOf(':') != -1 && displayValue.length == 5) {
                             this.value = displayValue.substring(0, 2) + displayValue.substring(3);
@@ -231,7 +230,6 @@
                             this.value = displayValue;
                         }
                         break;
-
                     default:
                         this.value = displayValue;
                         break;
@@ -254,9 +252,9 @@
                     } else {
                         this.displayValue = value;
                     }
-                } else {
+                 } else {
                     this.displayValue = '';
-                }
+                 }
             },
 
             /**
