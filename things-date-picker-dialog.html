@@ -14,172 +14,186 @@ Copyright © HatioLab Inc. All rights reserved.
 -->
 
 <dom-module id="things-date-picker-dialog">
-  <template>
-    <paper-dialog 
+    <template>
+    <paper-dialog
       modal
       always-on-top
       id="date-dialog"
       class="paper-date-picker-dialog"
       no-cancel-on-esc-key="[[noCancelOnEscKey]]">
 
-      <paper-date-picker 
+      <paper-date-picker
         id="date-picker"
-        locale="[[locale]]" 
+        locale="[[locale]]"
         date="{{date}}"
-        min-date="{{minDate}}" 
+        min-date="{{minDate}}"
         max-date="{{maxDate}}">
       </paper-date-picker>
 
       <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectDate">Select</paper-button>
-        <paper-button raised dialog-dismiss>Cancel</paper-button>
+        <paper-button raised dialog-confirm on-tap="selectDate">[[select]]</paper-button>
+        <paper-button raised dialog-dismiss>[[cancel]]</paper-button>
       </div>
     </paper-dialog>
   </template>
-  
-  <script>
-    Polymer({
-      is: 'things-date-picker-dialog',
 
-      properties: {
-        /**
-         * Date picker의 기준이 되는 locale을 설정한다.
-         */
-        locale: {
-          type: String,
-          value: 'en'
-        },
+    <script>
+        Polymer({
+            is: 'things-date-picker-dialog',
 
-        /**
-         * date의 읽기전용 format을 설정한다.
-         */
-        readFormat: {
-          type: String,
-          value: 'YYYY-MM-DD'
-        },
+            properties: {
+                /**
+                 * Date picker의 기준이 되는 locale을 설정한다.
+                 */
+                locale: {
+                    type: String,
+                    value: 'en'
+                },
 
-        /**
-         * date의 쓰기전용 format을 설정한다.
-         */
-        writeFormat: {
-          type: String,
-          value: 'YYYY-MM-DD'
-        },
+                /**
+                 * date의 읽기전용 format을 설정한다.
+                 */
+                readFormat: {
+                    type: String,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * 달력 다이얼로그에서 사용할 옵션들을 추출하여 설정하는데 사용
-         * 다이얼로그에서 선택되어야 할 날짜, 최소 선택 가능한 날짜, 최대 선택 가능한 날짜 등 
-         */
-        dataObj: {
-          type: Object,
-          observer: '_dataObjChanged'
-        },
+                /**
+                 * date의 쓰기전용 format을 설정한다.
+                 */
+                writeFormat: {
+                    type: String,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * formatting 이전의 Date
-         */
-        date: {
-          type: String
-        },
+                /**
+                 * 달력 다이얼로그에서 사용할 옵션들을 추출하여 설정하는데 사용
+                 * 다이얼로그에서 선택되어야 할 날짜, 최소 선택 가능한 날짜, 최대 선택 가능한 날짜 등
+                 */
+                dataObj: {
+                    type: Object,
+                    observer: '_dataObjChanged'
+                },
 
-        /**
-         * 최소 Limit 일자 
-         */
-        minDate: {
-          type: Date
-        },
+                /**
+                 * formatting 이전의 Date
+                 */
+                date: {
+                    type: String
+                },
 
-        /**
-         * 최대 Limit 일자 
-         */
-        maxDate: {
-          type: Date
-        },
+                /**
+                 * 최소 Limit 일자
+                 */
+                minDate: {
+                    type: Date
+                },
 
-        /**
-         * open 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
-         */
-        callback: {
-          type: Function
-        },
+                /**
+                 * 최대 Limit 일자
+                 */
+                maxDate: {
+                    type: Date
+                },
 
-        /**
-         * Set to true to disable canceling the overlay with the ESC key.
-         * True로 설정시 cancel dialog에서 ESC key로 꺼지지 않음
-         * @type {Boolean}
-         */
-        noCancelOnEscKey: {
-          type: Boolean,
-          value: false
-        }
-      },
+                /**
+                 * open 함수에서 초기화 되며 selectDate 함수에서 실행 합니다.
+                 */
+                callback: {
+                    type: Function
+                },
 
-      /**
-       * dataObj가 변경했다면 ...
-       *******
-       * @param {Object} dataObj
-       */
-      _dataObjChanged: function(dataObj) {
-        if(dataObj != null) {
-          this.minDate = dataObj.minDate ? dataObj.minDate : null;
-          this.maxDate = dataObj.maxDate ? dataObj.maxDate : null;
-          var dt = dataObj.date;
-          this.date = !dt ? new Date() : ((typeof(dt) == 'object') ? dt : new Date(dt));
-        } else {
-          this.date = new Date();
-        }
-      },
+                /**
+                 * Set to true to disable canceling the overlay with the ESC key.
+                 * True로 설정시 cancel dialog에서 ESC key로 꺼지지 않음
+                 * @type {Boolean}
+                 */
+                noCancelOnEscKey: {
+                    type: Boolean,
+                    value: false
+                },
 
-      /**
-       * callback 함수와 dataObj로 부터 Date Picker 다이얼로그를 오픈하는 함수 
-       *
-       * @param {Object} dataObj
-       * @param {Function} callback
-       */
-      open: function(dataObj, callback) {
-        this.dataObj = dataObj;
-        this.callback = callback;
-        this.$['date-dialog'].open();
-      },
+                select: {
+                    type: String,
+                    value: function() {
+                        return Things.DataGlobal.t('button.select');
+                    }
+                },
 
-      /**
-       * date-picker-dialog close
-       */
-      close: function() {
-        this.$['date-dialog'].close();
-      },
+                cancel: {
+                    type: String,
+                    value: function() {
+                        return Things.DataGlobal.t('button.cancel');
+                    }
+                }
+            },
 
-      /**
-       * date-picker의 dialog에서 date를 선택하고 해당 date를 formatting 합니다.
-       * callback 함수가 있을경우 callbakc함수를 호출 합니다.
-       */
-      selectDate: function() {
-        if(this.dataObj) {
-          this.dataObj['date'] = this.formatting(this.date);
-          if(this.callback) this.callback.apply(this.dataObj.owner, [this.dataObj]);
-        }
-      },
+            /**
+             * dataObj가 변경했다면 ...
+             *******
+             * @param {Object} dataObj
+             */
+            _dataObjChanged: function(dataObj) {
+                if (dataObj != null) {
+                    this.minDate = dataObj.minDate ? dataObj.minDate : null;
+                    this.maxDate = dataObj.maxDate ? dataObj.maxDate : null;
+                    var dt = dataObj.date;
+                    this.date = !dt ? new Date() : ((typeof(dt) == 'object') ? dt : new Date(dt));
+                } else {
+                    this.date = new Date();
+                }
+            },
 
-      /**
-       * date를 iso 표준의 string으로 변환 후 locale, readFormat를 바탕으로 formatting 합니다.
-       *
-       * @param {Object} date
-       */
-      formatting: function(date) {
-        if(date) {
-          var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
-          return moment(dt).locale(this.locale).format(this.readFormat);
-        } else {
-          return null
-        }
-      },
+            /**
+             * callback 함수와 dataObj로 부터 Date Picker 다이얼로그를 오픈하는 함수
+             *
+             * @param {Object} dataObj
+             * @param {Function} callback
+             */
+            open: function(dataObj, callback) {
+                this.dataObj = dataObj;
+                this.callback = callback;
+                this.$['date-dialog'].open();
+            },
 
-      /**
-       * Date Dialog
-       */
-      getDialog: function() {
-        return this.$['date-dialog'];
-      }
-    });
-  </script>
+            /**
+             * date-picker-dialog close
+             */
+            close: function() {
+                this.$['date-dialog'].close();
+            },
+
+            /**
+             * date-picker의 dialog에서 date를 선택하고 해당 date를 formatting 합니다.
+             * callback 함수가 있을경우 callbakc함수를 호출 합니다.
+             */
+            selectDate: function() {
+                if (this.dataObj) {
+                    this.dataObj['date'] = this.formatting(this.date);
+                    if (this.callback) this.callback.apply(this.dataObj.owner, [this.dataObj]);
+                }
+            },
+
+            /**
+             * date를 iso 표준의 string으로 변환 후 locale, readFormat를 바탕으로 formatting 합니다.
+             *
+             * @param {Object} date
+             */
+            formatting: function(date) {
+                if (date) {
+                    var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
+                    return moment(dt).locale(this.locale).format(this.readFormat);
+                } else {
+                    return null
+                }
+            },
+
+            /**
+             * Date Dialog
+             */
+            getDialog: function() {
+                return this.$['date-dialog'];
+            }
+        });
+    </script>
 </dom-module>
