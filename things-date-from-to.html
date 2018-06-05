@@ -25,7 +25,7 @@ Copyright © HatioLab Inc. All rights reserved.
 -->
 
 <dom-module id="things-date-from-to">
-  <template>
+    <template>
     <style>
       .input-fieldset {
         @apply(--layout-flex)
@@ -67,15 +67,15 @@ Copyright © HatioLab Inc. All rights reserved.
           readonly>
         </things-input-field>
 
-        <paper-icon-button 
-          class="clear" 
-          icon="clear" 
+        <paper-icon-button
+          class="clear"
+          icon="clear"
           on-tap="clearFrom"
           hidden="[[hideFromClear]]">
         </paper-icon-button>
-        
-        <paper-icon-button 
-          class="picker" 
+
+        <paper-icon-button
+          class="picker"
           on-tap="openFromPicker">
         </paper-icon-button>
       </div>
@@ -92,428 +92,453 @@ Copyright © HatioLab Inc. All rights reserved.
           readonly>
         </things-input-field>
 
-        <paper-icon-button 
-          class="clear" 
-          icon="clear" 
+        <paper-icon-button
+          class="clear"
+          icon="clear"
           on-tap="clearTo"
           hidden="[[hideToClear]]">
         </paper-icon-button>
-        
-        <paper-icon-button 
-          class="picker" 
+
+        <paper-icon-button
+          class="picker"
           on-tap="openToPicker">
         </paper-icon-button>
       </div>
     </div>
   </template>
 
-  <script>
-    Polymer({
-      is: 'things-date-from-to',
+    <script>
+        Polymer({
+            is: 'things-date-from-to',
 
-      behaviors: [
-        Things.MsgBoxBehavior
-      ],
+            behaviors: [
+                Things.MsgBoxBehavior
+            ],
 
-      properties: {
-        /**
-         * Name
-         * @type: String
-         ******/
-        name: {
-          type: String
-        },
+            properties: {
+                /**
+                 * Name
+                 * @type: String
+                 ******/
+                name: {
+                    type: String
+                },
 
-        /**
-         * label name
-         * @type: String
-         ******/
-        label: {
-          type: String,
-          observer: '_labelChanged'
-        },
+                /**
+                 * label name
+                 * @type: String
+                 ******/
+                label: {
+                    type: String,
+                    observer: '_labelChanged'
+                },
 
-        /**
-         * from field label name
-         * @type: String
-         ******/
-        fromLabel: {
-          type: String,
-          value: 'From'
-        },
+                /**
+                 * from field label name
+                 * @type: String
+                 ******/
+                fromLabel: {
+                    type: String,
+                    value: 'From'
+                },
 
-        /**
-         * to field label name
-         * @type: String
-         ******/
-        toLabel: {
-          type: String,
-          value: 'To'
-        },
+                /**
+                 * to field label name
+                 * @type: String
+                 ******/
+                toLabel: {
+                    type: String,
+                    value: 'To'
+                },
 
-        /**
-         * Date picker의 기준이 되는 locale을 설정한다.
-         * @type: String
-         ******/
-        locale: {
-          type: String,
-          notify: true,
-          value: 'en'
-        },
+                /**
+                 * Date picker의 기준이 되는 locale을 설정한다.
+                 * @type: String
+                 ******/
+                locale: {
+                    type: String,
+                    notify: true,
+                    value: 'en'
+                },
 
-        /**
-         * date의 읽기전용 format을 설정한다.
-         * @type: String
-         ******/
-        readFormat: {
-          type: String,
-          notify: true,
-          value: 'YYYY-MM-DD'
-        },
+                /**
+                 * date의 읽기전용 format을 설정한다.
+                 * @type: String
+                 ******/
+                readFormat: {
+                    type: String,
+                    notify: true,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * date의 쓰기전용 format을 설정한다.
-         * @type: String
-         ******/
-        writeFormat: {
-          type: String,
-          notify: true,
-          value: 'YYYY-MM-DD'
-        },
+                /**
+                 * date의 쓰기전용 format을 설정한다.
+                 * @type: String
+                 ******/
+                writeFormat: {
+                    type: String,
+                    notify: true,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * From Date
-         * @type: Date
-         ******/
-        selectedFromDate: {
-          type: Date
-        },
+                /**
+                 * From Date
+                 * @type: Date
+                 ******/
+                selectedFromDate: {
+                    type: Date
+                },
 
-        /**
-         * From Value
-         * @type: String
-         ******/
-        fromValue: {
-          type: String
-        },
+                /**
+                 * From Value
+                 * @type: String
+                 ******/
+                fromValue: {
+                    type: String
+                },
 
-        /**
-         * To Date
-         * @type: Date
-         ******/
-        selectedToDate: {
-          type: Date
-        },
+                /**
+                 * To Date
+                 * @type: Date
+                 ******/
+                selectedToDate: {
+                    type: Date
+                },
 
-        /**
-         * To Value
-         * @type: String
-         ******/
-        toValue: {
-          type: String
-        },
+                /**
+                 * To Value
+                 * @type: String
+                 ******/
+                toValue: {
+                    type: String
+                },
 
-        /**
-         * Form Submit시에 넘어갈 값 ex) 2015-05-01,2016-05-31
-         * @type: String
-         ******/
-        value: {
-          type: String
-        },
+                /**
+                 * Form Submit시에 넘어갈 값 ex) 2015-05-01,2016-05-31
+                 * @type: String
+                 ******/
+                value: {
+                    type: String
+                },
 
-        /**
-         * from - to picker 사이의 선택 가능 일수 (허용 범위)
-         * @type: Number
-         ******/
-        allowRange: {
-          type: Number
-        },
+                /**
+                 * from - to picker 사이의 선택 가능 일수 (허용 범위)
+                 * @type: Number
+                 ******/
+                allowRange: {
+                    type: Number
+                },
 
-        /**
-         * input field의 입력된 값이 allowRange에 부함하지 않을 경우 나타나는 메시지
-         * @type: String
-         ******/
-        errorMessage: {
-          type: String
-        },
+                /**
+                 * input field의 입력된 값이 allowRange에 부함하지 않을 경우 나타나는 메시지
+                 * @type: String
+                 ******/
+                errorMessage: {
+                    type: String
+                },
 
-        /**
-         * From Date를 Clear하는 버튼을 숨기는 옵션 
-         * @type: Boolean
-         ******/
-        hideFromClear: {
-          type: Boolean,
-          value: false
-        },
+                /**
+                 * From Date를 Clear하는 버튼을 숨기는 옵션
+                 * @type: Boolean
+                 ******/
+                hideFromClear: {
+                    type: Boolean,
+                    value: false
+                },
 
-        /**
-         * To Date를 Clear하는 버튼을 숨기는 옵션 
-         * @type: Boolean
-         ******/
-        hideToClear: {
-          type: Boolean,
-          value: false
-        }
-      },
+                /**
+                 * To Date를 Clear하는 버튼을 숨기는 옵션
+                 * @type: Boolean
+                 ******/
+                hideToClear: {
+                    type: Boolean,
+                    value: false
+                }
+            },
 
-      observers: [
-        '_selectedFromDateChanged(selectedFromDate)',
-        '_selectedToDateChanged(selectedToDate)'
-      ],
+            observers: [
+                '_selectedFromDateChanged(selectedFromDate)',
+                '_selectedToDateChanged(selectedToDate)'
+            ],
 
-      /**
-       * label을 property로 받아서 fromLabel과 toLabel을 초기화 합니다.
-       */
-      _labelChanged: function(label) {
-        this.fromLabel = label + ' (From)';
-        this.toLabel = label + ' (To)';
-      },
+            /**
+             * label을 property로 받아서 fromLabel과 toLabel을 초기화 합니다.
+             */
+            _labelChanged: function(label) {
+                this.fromLabel = label + ' (From)';
+                this.toLabel = label + ' (To)';
+            },
 
 
-      /**
-       * 선택된 from date를 빈값으로 초기화하며 inputfield의 vaild를 true로 설정
-       ****
-       */
-      clearFrom: function() {
-        this.selectedFromDate = null;
-      },
+            /**
+             * 선택된 from date를 빈값으로 초기화하며 inputfield의 vaild를 true로 설정
+             ****
+             */
+            clearFrom: function() {
+                this.selectedFromDate = null;
+            },
 
-      /**
-       * 선택된 to date를 빈값으로 초기화며 inputfield의 vaild를 true로 설정
-       ****
-       */
-      clearTo: function() {
-        this.selectedToDate = null;
-      },
+            /**
+             * 선택된 to date를 빈값으로 초기화며 inputfield의 vaild를 true로 설정
+             ****
+             */
+            clearTo: function() {
+                this.selectedToDate = null;
+            },
 
-      /**
-       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
-       ********
-       */
-      openFromPicker: function() {
-        var currentDate = this._toDateObj(this.selectedFromDate, new Date());
-        var maxDate = this._toDateObj(this.selectedToDate, null);
-        maxDate = this._fullHours(maxDate);
+            /**
+             * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+             ********
+             */
+            openFromPicker: function() {
+                var currentDate = this._toDateObj(this.selectedFromDate, new Date());
+                var maxDate = this._toDateObj(this.selectedToDate, null);
+                maxDate = this._fullHours(maxDate);
 
-        var dataObj = { owner: this, date: currentDate, maxDate: maxDate, minDate: null };
-        this.fire('things-date-picker-toggle', { dataObj: dataObj, callback: this._applyFromDate });
-      },
+                var dataObj = {
+                    owner: this,
+                    date: currentDate,
+                    maxDate: maxDate,
+                    minDate: null
+                };
+                this.fire('things-date-picker-toggle', {
+                    dataObj: dataObj,
+                    callback: this._applyFromDate
+                });
+            },
 
-      /**
-       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
-       ********
-       */
-      openToPicker: function() {
-        var currentDate = this._toDateObj(this.selectedToDate, new Date());
-        var minDate = this._toDateObj(this.selectedFromDate, null);
-        minDate = this._resetHours(minDate);
+            /**
+             * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+             ********
+             */
+            openToPicker: function() {
+                var currentDate = this._toDateObj(this.selectedToDate, new Date());
+                var minDate = this._toDateObj(this.selectedFromDate, null);
+                minDate = this._resetHours(minDate);
 
-        var dataObj = { owner: this, date: currentDate, minDate: minDate, maxDate: null };
-        this.fire('things-date-picker-toggle', { dataObj: dataObj, callback: this._applyToDate });
-      },
+                /**
+                 * updated by cuiguang - 2018.06.05
+                 * FIX when maxDate is null and fromDate is bigger than today, the 'to-date' selector will broken problem.
+                 */
+                var maxDate = null;
+                if (moment(currentDate).isBefore(minDate)) {
+                    maxDate = moment().add('year', 10)._d;
+                }
 
-      /**
-       * things-date-picker-dialog에 전달할 callback 함수
-       * selectedFromDate를 초기화 하고 _validateSelectedDate 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
-       ********
-       * @param {Object} dataObj
-       */
-      _applyFromDate: function(dataObj) {
-        var isValid = this._validateSelectedDate(true, dataObj.date, this.selectedToDate);
-        if(!isValid) {
-          this.selectedFromDate = null;
-        } else {
-          this.selectedFromDate = dataObj.date;
-        }
-      },
+                var dataObj = {
+                    owner: this,
+                    date: currentDate,
+                    minDate: minDate,
+                    maxDate: null
+                };
+                this.fire('things-date-picker-toggle', {
+                    dataObj: dataObj,
+                    callback: this._applyToDate
+                });
+            },
 
-      /**
-       * things-date-picker-dialog에 전달할 callback 함수
-       * selectedToDate를 초기화 하고 _validateSelectedDate 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
-       ********
-       * @param {Object} dataObj
-       */
-      _applyToDate: function(dataObj) {
-        var isValid = this._validateSelectedDate(false, this.selectedFromDate, dataObj.date);
-        if(!isValid) {
-          this.selectedToDate = null;
-        } else {
-          this.selectedToDate = dataObj.date;
-        }
-      },
+            /**
+             * things-date-picker-dialog에 전달할 callback 함수
+             * selectedFromDate를 초기화 하고 _validateSelectedDate 함수를 통해 from date와 to date 간의 validation check, false return시 selectedFromDate를 clear
+             ********
+             * @param {Object} dataObj
+             */
+            _applyFromDate: function(dataObj) {
+                var isValid = this._validateSelectedDate(true, dataObj.date, this.selectedToDate);
+                if (!isValid) {
+                    this.selectedFromDate = null;
+                } else {
+                    this.selectedFromDate = dataObj.date;
+                }
+            },
 
-      /**
-       * from date와 to date 간의 범위 validation check
-       ********
-       * @param {Boolean} fromFlag
-       * @param {Object} fromDate
-       * @param {Object} toDate
-       */
-      _validateSelectedDate: function(fromFlag, fromDate, toDate) {
-        if(fromDate && toDate && fromDate > toDate)  {
-          this.openInfoMsg({ 
-            title : Things.DataGlobal.t('text.invalid_input'), 
-            text : 'From Date is larger than To Date', 
-            type : 'info', 
-            timer : 5000 
-          });
-          return false;
-        }
+            /**
+             * things-date-picker-dialog에 전달할 callback 함수
+             * selectedToDate를 초기화 하고 _validateSelectedDate 함수를 통해 from date와 to date 간의 validation check, false return시 selectedToDate를 clear
+             ********
+             * @param {Object} dataObj
+             */
+            _applyToDate: function(dataObj) {
+                var isValid = this._validateSelectedDate(false, this.selectedFromDate, dataObj.date);
+                if (!isValid) {
+                    this.selectedToDate = null;
+                } else {
+                    this.selectedToDate = dataObj.date;
+                }
+            },
 
-        var valid = true;
-        if(this.allowRange && this.allowRange != '') {
-          valid = this._validateRange(fromFlag, fromDate, toDate);
-        }
-        return valid;
-      },
+            /**
+             * from date와 to date 간의 범위 validation check
+             ********
+             * @param {Boolean} fromFlag
+             * @param {Object} fromDate
+             * @param {Object} toDate
+             */
+            _validateSelectedDate: function(fromFlag, fromDate, toDate) {
+                if (fromDate && toDate && fromDate > toDate) {
+                    this.openInfoMsg({
+                        title: Things.DataGlobal.t('text.invalid_input'),
+                        text: 'From Date is larger than To Date',
+                        type: 'info',
+                        timer: 5000
+                    });
+                    return false;
+                }
 
-      /**
-       * allowRange가 있을 경우 발생합니다.
-       * 입력받은 fromDate가 toDate와 비교하여 허용 범위 안에 있는지를 계산하고
-       * 범위 밖일 경우 fromValid를 false로 리턴하여 errorMessage를 출력
-       *********
-       * @param {Boolean} fromFlag
-       * @param {Object} fromDate
-       * @param {Object} toDate
-       */
-      _validateRange: function(fromFlag, fromDate, toDate) {
-        if(fromDate && toDate) {
-          var fromDt = this._toDateObj(fromDate, null);
-          var toDt = this._toDateObj(toDate, null);
-          fromDate = this._resetHours(fromDt);
-          toDate = this._resetHours(toDt);
-          var allowDate = this._resetHours(new Date());
+                var valid = true;
+                if (this.allowRange && this.allowRange != '') {
+                    valid = this._validateRange(fromFlag, fromDate, toDate);
+                }
+                return valid;
+            },
 
-          if(fromFlag) {
-            allowDate.setDate(allowDate.getDate() - this.allowRange);
-            this.fromValid = (fromDate > allowDate);
-            return this.fromValid;
+            /**
+             * allowRange가 있을 경우 발생합니다.
+             * 입력받은 fromDate가 toDate와 비교하여 허용 범위 안에 있는지를 계산하고
+             * 범위 밖일 경우 fromValid를 false로 리턴하여 errorMessage를 출력
+             *********
+             * @param {Boolean} fromFlag
+             * @param {Object} fromDate
+             * @param {Object} toDate
+             */
+            _validateRange: function(fromFlag, fromDate, toDate) {
+                if (fromDate && toDate) {
+                    var fromDt = this._toDateObj(fromDate, null);
+                    var toDt = this._toDateObj(toDate, null);
+                    fromDate = this._resetHours(fromDt);
+                    toDate = this._resetHours(toDt);
+                    var allowDate = this._resetHours(new Date());
 
-          } else {
-            allowDate.setDate(allowDate.getDate() + this.allowRange);
-            this.toValid = (toDate < allowDate);
-            return this.toValid;
-          }
+                    if (fromFlag) {
+                        allowDate.setDate(allowDate.getDate() - this.allowRange);
+                        this.fromValid = (fromDate > allowDate);
+                        return this.fromValid;
 
-        } else {
-          return true;
-        }
-      },
+                    } else {
+                        allowDate.setDate(allowDate.getDate() + this.allowRange);
+                        this.toValid = (toDate < allowDate);
+                        return this.toValid;
+                    }
 
-      /**
-       * From Date 선택시 - value 변경
-       * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
-       * allowRange가 있다면 toValidation함수를 호출 합니다.
-       ****
-       */
-      _selectedFromDateChanged: function(date) {
-        this.fromValue = this._readFormatDate(date);
-        this._fromToDateChanged(date, this.selectedToDate);
-      },
+                } else {
+                    return true;
+                }
+            },
 
-      /**
-       * To Date 선택시 - value 변경
-       * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
-       * allowRange가 있다면 toValidateion함수를 호출 합니다.
-       ****
-       */
-      _selectedToDateChanged: function(date) {
-        this.toValue = this._readFormatDate(date);
-        this._fromToDateChanged(this.selectedFromDate, date);
-      },
+            /**
+             * From Date 선택시 - value 변경
+             * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
+             * allowRange가 있다면 toValidation함수를 호출 합니다.
+             ****
+             */
+            _selectedFromDateChanged: function(date) {
+                this.fromValue = this._readFormatDate(date);
+                this._fromToDateChanged(date, this.selectedToDate);
+            },
 
-      /**
-       * date 값을 date object로 변환 
-       * *****
-       * @param {Object} date
-       * @param {Date} defaultVal
-       */
-      _toDateObj: function(dateVal, defaultVal) {
-        var dt = !dateVal ? defaultVal : (typeof(dateVal) == 'object' ? dateVal : new Date(dateVal));
-        return dt;
-      },
+            /**
+             * To Date 선택시 - value 변경
+             * 입력받은 date를 formatting 함수를 통해 formatting하고 string으로 초기화 합니다.
+             * allowRange가 있다면 toValidateion함수를 호출 합니다.
+             ****
+             */
+            _selectedToDateChanged: function(date) {
+                this.toValue = this._readFormatDate(date);
+                this._fromToDateChanged(this.selectedFromDate, date);
+            },
 
-      /**
-       * date의 시, 분, 초를 모두 0으로 리셋 
-       * *****
-       * @param {Date} date
-       */
-      _resetHours: function(date) {
-        if(!date) return date;
-        date.setHours(0, 0, 0, 0);
-        return date;
-      },
+            /**
+             * date 값을 date object로 변환
+             * *****
+             * @param {Object} date
+             * @param {Date} defaultVal
+             */
+            _toDateObj: function(dateVal, defaultVal) {
+                var dt = !dateVal ? defaultVal : (typeof(dateVal) == 'object' ? dateVal : new Date(dateVal));
+                return dt;
+            },
 
-      /**
-       * date의 시, 분, 초를 모두 하루의 마지막 시간으로 리셋 
-       * *****
-       * @param {Date} date
-       */
-      _fullHours: function(date) {
-        if(!date) return date;
-        date.setHours(23, 59, 59, 0);
-        return date;
-      },
+            /**
+             * date의 시, 분, 초를 모두 0으로 리셋
+             * *****
+             * @param {Date} date
+             */
+            _resetHours: function(date) {
+                if (!date) return date;
+                date.setHours(0, 0, 0, 0);
+                return date;
+            },
 
-      /**
-       * date를 iso 표준의 string으로 변환 후 locale, readFormat를 바탕으로 formatting 합니다.
-       *********
-       * @param {Object} date
-       */
-      _readFormatDate: function(date) {
-        if(date) {
-          var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
-          return moment(dt).locale(this.locale).format(this.readFormat);
-        } else {
-          return null
-        }
-      },
+            /**
+             * date의 시, 분, 초를 모두 하루의 마지막 시간으로 리셋
+             * *****
+             * @param {Date} date
+             */
+            _fullHours: function(date) {
+                if (!date) return date;
+                date.setHours(23, 59, 59, 0);
+                return date;
+            },
 
-      /**
-       * date를 iso 표준의 string으로 변환 후 locale, writeFormat를 바탕으로 formatting 합니다.
-       *********
-       * @param {Object} date
-       */
-      _writeFormatDate: function(date) {
-        if(date) {
-          return (typeof(date) == 'object') ? moment(date).format(this.writeFormat) : date;
-        } else {
-          return null
-        }
-      },
+            /**
+             * date를 iso 표준의 string으로 변환 후 locale, readFormat를 바탕으로 formatting 합니다.
+             *********
+             * @param {Object} date
+             */
+            _readFormatDate: function(date) {
+                if (date) {
+                    var dt = (typeof(date) == 'object') ? moment(date).format(this.readFormat) : date;
+                    return moment(dt).locale(this.locale).format(this.readFormat);
+                } else {
+                    return null
+                }
+            },
 
-      /**
-       * fromDate 혹은 toDate가 변경된 이 후 ...
-       ******
-       * @param {Date} fromDate
-       * @param {Date} toDate
-       */
-      _fromToDateChanged: function(fromDate, toDate) {
-        var realValue = '';
+            /**
+             * date를 iso 표준의 string으로 변환 후 locale, writeFormat를 바탕으로 formatting 합니다.
+             *********
+             * @param {Object} date
+             */
+            _writeFormatDate: function(date) {
+                if (date) {
+                    return (typeof(date) == 'object') ? moment(date).format(this.writeFormat) : date;
+                } else {
+                    return null
+                }
+            },
 
-        if(fromDate && toDate) {
-          realValue = this._writeFormatDate(fromDate);
-          realValue += ',';
-          realValue += this._writeFormatDate(toDate);
+            /**
+             * fromDate 혹은 toDate가 변경된 이 후 ...
+             ******
+             * @param {Date} fromDate
+             * @param {Date} toDate
+             */
+            _fromToDateChanged: function(fromDate, toDate) {
+                var realValue = '';
 
-        } else if(fromDate && !toDate) {
-          realValue = this._writeFormatDate(fromDate);
-          realValue += ',';
+                if (fromDate && toDate) {
+                    realValue = this._writeFormatDate(fromDate);
+                    realValue += ',';
+                    realValue += this._writeFormatDate(toDate);
 
-        } else if(!fromDate && toDate) {
-          realValue = ',';
-          realValue += this._writeFormatDate(toDate);
+                } else if (fromDate && !toDate) {
+                    realValue = this._writeFormatDate(fromDate);
+                    realValue += ',';
 
-        } else {
-          realValue = '';
-        }
+                } else if (!fromDate && toDate) {
+                    realValue = ',';
+                    realValue += this._writeFormatDate(toDate);
 
-        if(realValue == ',') {
-          realValue = '';
-        }
+                } else {
+                    realValue = '';
+                }
 
-        this.value = realValue;
-      }
-    });
-  </script>
+                if (realValue == ',') {
+                    realValue = '';
+                }
+
+                this.value = realValue;
+            }
+        });
+    </script>
 </dom-module>
