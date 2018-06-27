@@ -31,8 +31,8 @@ Copyright © HatioLab Inc. All rights reserved.
       </paper-date-picker>
 
       <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectDate">[[select]]</paper-button>
-        <paper-button raised dialog-dismiss>[[cancel]]</paper-button>
+        <paper-button raised dialog-confirm on-tap="selectDate">[[selectLabel]]</paper-button>
+        <paper-button raised dialog-dismiss>[[cancelLabel]]</paper-button>
       </div>
     </paper-dialog>
   </template>
@@ -113,19 +113,8 @@ Copyright © HatioLab Inc. All rights reserved.
                     value: false
                 },
 
-                select: {
-                    type: String,
-                    value: function() {
-                        return Things.DataGlobal.t('button.select');
-                    }
-                },
-
-                cancel: {
-                    type: String,
-                    value: function() {
-                        return Things.DataGlobal.t('button.cancel');
-                    }
-                }
+                selectLabel: String,
+                cancelLabel: String
             },
 
             /**
@@ -154,6 +143,10 @@ Copyright © HatioLab Inc. All rights reserved.
                 this.dataObj = dataObj;
                 this.callback = callback;
                 this.$['date-dialog'].open();
+
+                // 弹出框打开时给按钮添加多语言属性
+                this.selectLabel = Things.DataGlobal.t('button.select');
+                this.cancelLabel = Things.DataGlobal.t('button.cancel');
             },
 
             /**
