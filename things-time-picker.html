@@ -23,7 +23,7 @@ Copyright © HatioLab Inc. All rights reserved.
 @demo demo/demo-things-time-picker.html
 -->
 <dom-module id="things-time-picker">
-  <template>
+    <template>
     <style>
       things-input-field::shadow input{
         @apply(--things-input);
@@ -60,83 +60,92 @@ Copyright © HatioLab Inc. All rights reserved.
     <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
       <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
       <div class="buttons">
-        <paper-button raised dialog-confirm on-tap="selectTime">Select</paper-button>
-        <paper-button raised dialog-dismiss>Cancel</paper-button>
+        <paper-button raised dialog-confirm on-tap="selectTime">[[selectLabel]]</paper-button>
+        <paper-button raised dialog-dismiss>[[cancelLabel]]</paper-button>
       </div>
     </paper-dialog>
 
   </template>
 
-  <script type='text/javascript'>
-    (function() {
-      Polymer({
-        is: 'things-time-picker',
+    <script type='text/javascript'>
+        (function() {
+            Polymer({
+                is: 'things-time-picker',
 
-        properties: {
-          value: {
-            type: String,
-            observer: '_valueChanged'
-          },
+                properties: {
+                    value: {
+                        type: String,
+                        observer: '_valueChanged'
+                    },
 
-          /**
-           * input field에서 사용할 validator name
-           * @type: String
-           ******/
-          validator: {
-            type: String
-          },
+                    /**
+                     * input field에서 사용할 validator name
+                     * @type: String
+                     ******/
+                    validator: {
+                        type: String
+                    },
 
-          /**
-           * input field의 auto vaidation 여부
-           * @type: Boolean
-           ******/
-          autoValidate: {
-            type: Boolean,
-            value: false
-          },
+                    /**
+                     * input field의 auto vaidation 여부
+                     * @type: Boolean
+                     ******/
+                    autoValidate: {
+                        type: Boolean,
+                        value: false
+                    },
 
-          /**
-           * validation 오류시 출력되는 error message
-           * @type: String
-           ******/
-          errorMessage: {
-            type: String
-          }
-        },
+                    /**
+                     * validation 오류시 출력되는 error message
+                     * @type: String
+                     ******/
+                    errorMessage: {
+                        type: String
+                    },
 
-        /**
-         * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
-        ****
-         */
-        showTimePicker: function() {
-          this.$.timeDialog.toggle();
-        },
-        /**
-         * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
-        ****
-         */
-        selectTime: function() {
-          this.selectedTime = this.time;
-        },
+                    selectLabel: String,
+                    cancelLabel: String
+                },
 
-        /**
-         * 초기화된 데이터를 제거하는 기능
-        ****
-         */
-        clearField: function() {
-          this.selectedTime = '';
-        },
+                attached: function() {
+                    // 弹出框打开时给按钮添加多语言属性
+                    this.selectLabel = Things.DataGlobal.t('button.select');
+                    this.cancelLabel = Things.DataGlobal.t('button.cancel');
+                }
 
-        /**
-         * time picker field의 값이 변화 했을시 실행되며
-         * selectedTime에 새로운 value를 초기화 한다.
-        ****
-         */
-        _valueChanged: function(e) {
-          this.selectedTime = e;
-        }
+                /**
+                 * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
+                 ****
+                 */
+                    showTimePicker: function() {
+                    this.$.timeDialog.toggle();
+                },
+                /**
+                 * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
+                 ****
+                 */
+                selectTime: function() {
+                    this.selectedTime = this.time;
+                },
 
-      })
-    })();
-  </script>
+                /**
+                 * 초기화된 데이터를 제거하는 기능
+                 ****
+                 */
+                clearField: function() {
+                    this.selectedTime = '';
+                },
+
+                /**
+                 * time picker field의 값이 변화 했을시 실행되며
+                 * selectedTime에 새로운 value를 초기화 한다.
+                 ****
+                 */
+                _valueChanged: function(e) {
+                    this.selectedTime = e;
+                }
+
+            })
+        })();
+    </script>
 </dom-module>
