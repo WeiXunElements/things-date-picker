@@ -501,7 +501,7 @@ Copyright © HatioLab Inc. All rights reserved.
              */
             _writeFormatDate: function(date) {
                 if (date) {
-                    return (typeof(date) == 'object') ? moment(date).format(this.writeFormat) : date;
+                    return moment(date).format(this.writeFormat);
                 } else {
                     return null
                 }
