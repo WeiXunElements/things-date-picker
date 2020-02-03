@@ -25,259 +25,278 @@ Copyright © HatioLab Inc. All rights reserved.
 -->
 
 <dom-module id="things-date-picker">
-  <template>
-    <style>
-      things-input-field::shadow input{
-        @apply(--things-input);
-        width:calc(65% - 37px);
-      }
-      paper-icon-button.clear{
-        @apply(--things-small-icon);
-        margin-right:7px;margin-left:-27px;
-        opacity:.4;
-        position:relative;
-        top:-2px;
-      }
-      paper-icon-button.picker{
-        @apply(--things-picker-button);
-        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
-        top:1px;
-      }
-    </style>
+    <template>
+        <style>
+            things-input-field::shadow input {
+                @apply(--things-input);
+                width: calc(65% - 37px);
+            }
 
-    <things-input-field
-      hidden
-      type="text"
-      name="[[name]]"
-      value="{{value}}">
-    </things-input-field>
+            paper-icon-button.clear {
+                @apply(--things-small-icon);
+                margin-right: 7px;
+                margin-left: -27px;
+                opacity: .4;
+                position: relative;
+                top: -2px;
+            }
 
-    <things-input-field
-      id="date-field"
-      label="[[label]]"
-      type="text"
-      value="[[displayValue]]"
-      validator="[[validator]]"
-      auto-validate="[[autoValidate]]"
-      error-message="[[errorMessage]]"
-      readonly>
-    </things-input-field>
+            paper-icon-button.picker {
+                @apply(--things-picker-button);
+                background: url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+                top: 1px;
+            }
+        </style>
 
-    <template is="dom-if" if="[[!readonly]]">
-      <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
-      <paper-icon-button class="picker" on-tap="openDatePicker"></paper-icon-button>
+        <things-input-field hidden type="text" name="[[name]]" value="{{value}}">
+        </things-input-field>
+
+        <things-input-field 
+            id="date-field" 
+            label="[[label]]" 
+            type="text" 
+            value="[[displayValue]]"
+            validator="[[validator]]" 
+            auto-validate="[[autoValidate]]" 
+            error-message="[[errorMessage]]" 
+            readonly
+            disabled$="[[disabled]]">
+        </things-input-field>
+
+        <template is="dom-if" if="[[!readonly]]">
+            <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
+            <paper-icon-button class="picker" disabled$="[[disabled]]" on-tap="openDatePicker"></paper-icon-button>
+        </template>
     </template>
-  </template>
 
-  <script>
-    Polymer({
-      is: 'things-date-picker',
+    <script>
+        Polymer({
+            is: 'things-date-picker',
 
-      behaviors: [
-        Things.GlobalBehavior,
-        Things.MsgBoxBehavior
-      ],
+            behaviors: [
+                Things.GlobalBehavior,
+                Things.MsgBoxBehavior
+            ],
 
-      properties: {
-        /**
-         * Date picker의 기준이 되는 locale을 설정한다.
-         * @type: String
-         ******/
-        locale: {
-          type: String,
-          value: 'zh-cn'
-        },
+            properties: {
+                /**
+                 * Date picker의 기준이 되는 locale을 설정한다.
+                 * @type: String
+                 ******/
+                locale: {
+                    type: String,
+                    value: 'zh-cn'
+                },
 
-        /**
-         * date의 읽기전용 format을 설정한다.
-         * @type: String
-         ******/
-        readFormat: {
-          type: String,
-          value: 'YYYY-MM-DD'
-        },
+                /**
+                 * date의 읽기전용 format을 설정한다.
+                 * @type: String
+                 ******/
+                readFormat: {
+                    type: String,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * date의 쓰기전용 format을 설정한다.
-         * @type: String
-         ******/
-        writeFormat: {
-          type: String,
-          value: 'YYYY-MM-DD'
-        },
+                /**
+                 * date의 쓰기전용 format을 설정한다.
+                 * @type: String
+                 ******/
+                writeFormat: {
+                    type: String,
+                    value: 'YYYY-MM-DD'
+                },
 
-        /**
-         * date 표시를 위한 문자열 값
-         * @type: String
-         ******/
-        displayValue: {
-          type: String
-        },
+                /**
+                 * date 표시를 위한 문자열 값
+                 * @type: String
+                 ******/
+                displayValue: {
+                    type: String
+                },
 
-        /**
-         * date 문자열 실제 값
-         * @type: String
-         ******/
-        value: {
-          type: String,
-          notify: true,
-          observer: '_valueChanged'
-        },
+                /**
+                 * date 문자열 실제 값
+                 * @type: String
+                 ******/
+                value: {
+                    type: String,
+                    notify: true,
+                    observer: '_valueChanged'
+                },
 
-        /**
-         * date value
-         * @type: Object
-         ******/
-        dateValue: {
-          type: Object,
-          observer: '_dateValueChanged'
-        },
+                /**
+                 * date value
+                 * @type: Object
+                 ******/
+                dateValue: {
+                    type: Object,
+                    observer: '_dateValueChanged'
+                },
 
-        /**
-         * minimum date
-         * @type: Date
-         ******/
-        minDate: {
-          type: Date
-        },
+                /**
+                 * minimum date
+                 * @type: Date
+                 ******/
+                minDate: {
+                    type: Date
+                },
 
-        /**
-         * maximum date
-         * @type: Date
-         ******/
-        maxDate: {
-          type: Date
-        },
+                /**
+                 * maximum date
+                 * @type: Date
+                 ******/
+                maxDate: {
+                    type: Date
+                },
 
-        /**
-         * input field에서 사용할 validator name
-         * @type: String
-         ******/
-        validator: {
-          type: String
-        },
+                /**
+                 * input field에서 사용할 validator name
+                 * @type: String
+                 ******/
+                validator: {
+                    type: String
+                },
 
-        /**
-         * input field의 auto vaidation 여부
-         * @type: Boolean
-         ******/
-        autoValidate: {
-          type: Boolean,
-          value: false
-        },
+                /**
+                 * input field의 auto vaidation 여부
+                 * @type: Boolean
+                 ******/
+                autoValidate: {
+                    type: Boolean,
+                    value: false
+                },
 
-        /**
-         * validation 오류시 출력되는 error message
-         * @type: String
-         ******/
-        errorMessage: {
-          type: String
-        },
+                /**
+                 * validation 오류시 출력되는 error message
+                 * @type: String
+                 ******/
+                errorMessage: {
+                    type: String
+                },
 
-        /**
-         * value가 먼저 변경되었는 지, dateValue가 먼저 변경되었는 지 모드
-         * @type: Boolean
-         *********
-         */
-        changeMode: {
-          type: String,
-          value: ''
-        },
+                /**
+                 * value가 먼저 변경되었는 지, dateValue가 먼저 변경되었는 지 모드
+                 * @type: Boolean
+                 *********
+                 */
+                changeMode: {
+                    type: String,
+                    value: ''
+                },
 
-        /**
-         * 검색폼의 입력값이 필수 값인지 여부를 결정
-         * 필수 값으로 설정되면 clear버튼을 숨긴다.
-         * @type Boolean
-         */
-        required: {
-          type: Boolean,
-          value: false,
-          observer: '_requiredChanged'
-        },
+                /**
+                 * 검색폼의 입력값이 필수 값인지 여부를 결정
+                 * 필수 값으로 설정되면 clear버튼을 숨긴다.
+                 * @type Boolean
+                 */
+                required: {
+                    type: Boolean,
+                    value: false,
+                    observer: '_requiredChanged'
+                },
 
-        readonly: {
-          type: Boolean,
-          value: false
-        }
-      },
+                /**
+                 * Readonly
+                 * @type: Boolean
+                 */
+                readonly: {
+                    type: Boolean,
+                    value: false
+                },
 
-      /**
-       * dateValue 값이 변경되었을 때 ...
-       ****
-       * @param {Object} dateValue
-       */
-      _dateValueChanged: function(dateValue) {
-        // 1. value가 먼저 변경된 경우 이면 그냥 종료
-        if(this.changeMode == 'value') {
-          this.changeMode = '';
+                /**
+                 * Disabled
+                 * @type: Boolean
+                 */
+                disabled: {
+                    type: Boolean,
+                    value: false
+                }
+            },
 
-        // 2. dateValue가 먼저 변경된 경우이면 displayValue, value를 설정
-        } else {
-          this.changeMode = 'dateValue';
-          this.displayValue = dateValue ? moment(dateValue).format(this.readFormat) : '';
-          this.value = dateValue ? moment(dateValue).format(this.writeFormat) : '';
-        }
-      },
+            /**
+             * dateValue 값이 변경되었을 때 ...
+             ****
+             * @param {Object} dateValue
+             */
+            _dateValueChanged: function (dateValue) {
+                // 1. value가 먼저 변경된 경우 이면 그냥 종료
+                if (this.changeMode == 'value') {
+                    this.changeMode = '';
 
-      /**
-       * value 값이 변경되었을 때 ...
-       ****
-       * @param {String} value
-       */
-      _valueChanged: function(value) {
-        // 1. dateValue가 먼저 변경된 경우 그냥 종료
-        if(this.changeMode == 'dateValue') {
-          this.changeMode = '';
+                    // 2. dateValue가 먼저 변경된 경우이면 displayValue, value를 설정
+                } else {
+                    this.changeMode = 'dateValue';
+                    this.displayValue = dateValue ? moment(dateValue).format(this.readFormat) : '';
+                    this.value = dateValue ? moment(dateValue).format(this.writeFormat) : '';
+                }
+            },
 
-        // 2. value가 먼저 변경된 경우 dateValue를 설정
-        } else {
-          this.changeMode = 'value';
-          this.dateValue = (value && value != '') ? moment(value).toDate() : null;
-          this.displayValue = this.dateValue ? moment(this.dateValue).format(this.readFormat) : '';
-        }
-      },
+            /**
+             * value 값이 변경되었을 때 ...
+             ****
+             * @param {String} value
+             */
+            _valueChanged: function (value) {
+                // 1. dateValue가 먼저 변경된 경우 그냥 종료
+                if (this.changeMode == 'dateValue') {
+                    this.changeMode = '';
 
-      /**
-       * things-date-picker-dialog에 전달할 callback 함수
-       ****
-       * @param {Object} dateObj
-       */
-      _applySelectedDate: function(dateObj) {
-        this.changeMode = 'dateValue'
-        this.dateValue = dateObj.date;
-      },
+                    // 2. value가 먼저 변경된 경우 dateValue를 설정
+                } else {
+                    this.changeMode = 'value';
+                    this.dateValue = (value && value != '') ? moment(value).toDate() : null;
+                    this.displayValue = this.dateValue ? moment(this.dateValue).format(this.readFormat) :
+                    '';
+                }
+            },
 
-      /**
-       * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
-       ****
-       */
-      openDatePicker: function() {
-        var dt = this.dateValue ? this.dateValue : new Date();
-        var event = {
-          dataObj: { owner: this, date: dt, minDate: this.minDate, maxDate: this.maxDate },
-          callback: this._applySelectedDate
-        };
+            /**
+             * things-date-picker-dialog에 전달할 callback 함수
+             ****
+             * @param {Object} dateObj
+             */
+            _applySelectedDate: function (dateObj) {
+                this.changeMode = 'dateValue'
+                this.dateValue = dateObj.date;
+            },
 
-        this.fire('things-date-picker-toggle', event);
-      },
+            /**
+             * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
+             ****
+             */
+            openDatePicker: function () {
+                var dt = this.dateValue ? this.dateValue : new Date();
+                var event = {
+                    dataObj: {
+                        owner: this,
+                        date: dt,
+                        minDate: this.minDate,
+                        maxDate: this.maxDate
+                    },
+                    callback: this._applySelectedDate
+                };
 
-      /**
-       * 검색 필드의 값이 필수 값일 때 (required가 true일 때)
-       * clear 버튼을 숨긴고 field의 required attribute를 추가하여 valdation 할 수 있도록 변경
-       */
-      _requiredChanged: function(required) {
-        this.$['date-field'].setAttribute('required', true);
-        this.hideClearBtn = required;
-      },
+                this.fire('things-date-picker-toggle', event);
+            },
 
-      /**
-       * 초기화된 데이터를 제거하는 기능
-       ****
-       */
-      clearField: function() {
-        this.changeMode = 'dateValue'
-        this.dateValue = null;
-      }
-    });
-  </script>
+            /**
+             * 검색 필드의 값이 필수 값일 때 (required가 true일 때)
+             * clear 버튼을 숨긴고 field의 required attribute를 추가하여 valdation 할 수 있도록 변경
+             */
+            _requiredChanged: function (required) {
+                this.$['date-field'].setAttribute('required', true);
+                this.hideClearBtn = required;
+            },
+
+            /**
+             * 초기화된 데이터를 제거하는 기능
+             ****
+             */
+            clearField: function () {
+                this.changeMode = 'dateValue'
+                this.dateValue = null;
+            }
+        });
+    </script>
 </dom-module>
