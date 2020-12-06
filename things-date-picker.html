@@ -11,75 +11,29 @@ Copyright © HatioLab Inc. All rights reserved.
 <link rel="import" href="things-date-picker-dialog.html">
 
 <!--
-`<things-date-time-picker>` Things Date Time Picker
-
+`<things-date-picker>` Things Date Picker
   Example
-
-    <things-date-time-picker
-      label="Date Time"
+    <things-date-picker
+      label="Date Picker"
       locale="ko"
-      read-format="YYYY-MM-DD hh:mm:ss">
-    </things-date-time-picker>
-
+      read-format="YYYY-MM-DD">
+    </things-date-picker>
 @demo demo/index.html
 -->
 
-<dom-module id="things-date-time-picker">
+<dom-module id="things-date-picker">
     <template>
         <style>
-            :host {
-                display: block;
-            }
-
-
             things-input-field::shadow input {
                 @apply(--things-input);
-                width: calc(31% - 37px);
-            }
-
-
-            things-time-input::shadow input {
-                @apply(--things-input);
-                width: 30%;
-                margin-left: 50px;
-            }
-
-
-
-            @media (max-width: 840px) {
-                things-input-field::shadow input {
-                    width: calc(30% - 37.5px) !important;
-                }
-            }
-
-            @media (min-width: 841px) and (max-width: 1024px) {
-                things-input-field::shadow input {
-                    width: calc(31% - 38.5px) !important;
-                }
-            }
-
-            @media (min-width: 1300px) and (max-width: 1499px) {
-                things-input-field::shadow input {
-                    width: calc(31.2% - 37px) !important;
-                }
-            }
-
-            @media (min-width: 1500px) and (max-width: 1799px) {
-                things-input-field::shadow input {
-                    width: calc(31.5% - 37px) !important;
-                }
-            }
-
-            @media (min-width: 1800px) and (max-width: 2099px) {
-                things-input-field::shadow input {
-                    width: calc(31.6% - 37px) !important;
-                }
+                width: calc(65% - 37px);
             }
 
             paper-icon-button.clear {
                 @apply(--things-small-icon);
                 margin-right: 7px;
                 margin-left: -27px;
+                opacity: .4;
                 position: relative;
                 top: -2px;
             }
@@ -89,57 +43,32 @@ Copyright © HatioLab Inc. All rights reserved.
                 background: url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
                 top: 1px;
             }
-
-            .things-time-input {
-                width:30%;
-                margin-left: -50px;
-                margin-right: 7px;
-                margin-top: -60px;
-                width: calc(31.6% - 37px) !important;
-            }
         </style>
 
+        <things-input-field hidden type="text" name="[[name]]" value="{{value}}">
+        </things-input-field>
+
         <things-input-field 
-            label="[[label]]"
-            type="text"
-            value="{{selectedDate}}"
-            validator="[[validator]]"
-            auto-validate="[[autoValidate]]"
-            error-message="[[errorMessage]]"
+            id="date-field" 
+            label="[[label]]" 
+            type="text" 
+            value="[[displayValue]]"
+            validator="[[validator]]" 
+            auto-validate="[[autoValidate]]" 
+            error-message="[[errorMessage]]" 
             readonly
             disabled$="[[disabled]]">
         </things-input-field>
 
-        <paper-icon-button class="clear" icon="clear" on-tap="clearDateField"></paper-icon-button>
-        <paper-icon-button class="picker" on-tap="openDatePicker" disabled$="[[disabled]]"></paper-icon-button>
-
-        <things-time-input
-            class="things-time-input"
-            hide-label
-            validator="[[validator]]"
-            value="{{selectedTime}}">
-        </things-time-input>
-
-        <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
-            <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
-            <div class="buttons">
-                <paper-button raised dialog-confirm on-tap="selectTime">Select</paper-button>
-                <paper-button raised dialog-dismiss>Cancel</paper-button>
-            </div>
-        </paper-dialog>
-
-        <input is="iron-input"
-            id="input"
-            name="[[name]]"
-            value="[[value]]"
-            bind-value="[[value]]"
-            hidden>
-        </input>
+        <template is="dom-if" if="[[!readonly]]">
+            <paper-icon-button class="clear" icon="clear" on-tap="clearField" hidden="[[hideClearBtn]]"></paper-icon-button>
+            <paper-icon-button class="picker" disabled$="[[disabled]]" on-tap="openDatePicker"></paper-icon-button>
+        </template>
     </template>
 
     <script>
         Polymer({
-            is: 'things-date-time-picker',
+            is: 'things-date-picker',
 
             behaviors: [
                 Things.GlobalBehavior,
@@ -148,30 +77,21 @@ Copyright © HatioLab Inc. All rights reserved.
 
             properties: {
                 /**
-                 * date picker의 기준이 되는 locale을 설정한다.
+                 * Date picker의 기준이 되는 locale을 설정한다.
                  * @type: String
                  ******/
                 locale: {
                     type: String,
-                    value: 'en'
+                    value: 'zh-cn'
                 },
 
                 /**
                  * date의 읽기전용 format을 설정한다.
                  * @type: String
                  ******/
-                readDateFormat: {
+                readFormat: {
                     type: String,
                     value: 'YYYY-MM-DD'
-                },
-
-                /**
-                 * time의 읽기전용 format을 설정한다.
-                 * @type: String
-                 ******/
-                readTimeFormat: {
-                    type: String,
-                    value: 'HH:mm:ss'
                 },
 
                 /**
@@ -180,34 +100,34 @@ Copyright © HatioLab Inc. All rights reserved.
                  ******/
                 writeFormat: {
                     type: String,
-                    value: 'YYYY-MM-DD HH:mm:ss'
+                    value: 'YYYY-MM-DD'
                 },
 
                 /**
-                 * date 표시 값
+                 * date 표시를 위한 문자열 값
                  * @type: String
                  ******/
-                selectedDate: {
-                    type: String,
-                    notify: true
+                displayValue: {
+                    type: String
                 },
 
                 /**
-                 * time 표시 값
-                 * @type: String
-                 ******/
-                selectedTime: {
-                    type: String,
-                    notify: true
-                },
-
-                /**
-                 * date value
+                 * date 문자열 실제 값
                  * @type: String
                  ******/
                 value: {
                     type: String,
-                    notify: true
+                    notify: true,
+                    observer: '_valueChanged'
+                },
+
+                /**
+                 * date value
+                 * @type: Object
+                 ******/
+                dateValue: {
+                    type: Object,
+                    observer: '_dateValueChanged'
                 },
 
                 /**
@@ -251,24 +171,99 @@ Copyright © HatioLab Inc. All rights reserved.
                     type: String
                 },
 
+                /**
+                 * value가 먼저 변경되었는 지, dateValue가 먼저 변경되었는 지 모드
+                 * @type: Boolean
+                 *********
+                 */
+                changeMode: {
+                    type: String,
+                    value: ''
+                },
+
+                /**
+                 * 검색폼의 입력값이 필수 값인지 여부를 결정
+                 * 필수 값으로 설정되면 clear버튼을 숨긴다.
+                 * @type Boolean
+                 */
+                required: {
+                    type: Boolean,
+                    value: false,
+                    observer: '_requiredChanged'
+                },
+
+                /**
+                 * Readonly
+                 * @type: Boolean
+                 */
+                readonly: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * Disabled
+                 * @type: Boolean
+                 */
                 disabled: {
                     type: Boolean,
-                    notify: true,
                     value: false
                 }
             },
 
-            observers: [
-                '_dateValueChanged(selectedDate)',
-                '_timeValueChanged(selectedTime)'
-            ],
+            /**
+             * dateValue 값이 변경되었을 때 ...
+             ****
+             * @param {Object} dateValue
+             */
+            _dateValueChanged: function (dateValue) {
+                // 1. value가 먼저 변경된 경우 이면 그냥 종료
+                if (this.changeMode == 'value') {
+                    this.changeMode = '';
+
+                    // 2. dateValue가 먼저 변경된 경우이면 displayValue, value를 설정
+                } else {
+                    this.changeMode = 'dateValue';
+                    this.displayValue = dateValue ? moment(dateValue).format(this.readFormat) : '';
+                    this.value = dateValue ? moment(dateValue).format(this.writeFormat) : '';
+                }
+            },
+
+            /**
+             * value 값이 변경되었을 때 ...
+             ****
+             * @param {String} value
+             */
+            _valueChanged: function (value) {
+                // 1. dateValue가 먼저 변경된 경우 그냥 종료
+                if (this.changeMode == 'dateValue') {
+                    this.changeMode = '';
+
+                    // 2. value가 먼저 변경된 경우 dateValue를 설정
+                } else {
+                    this.changeMode = 'value';
+                    this.dateValue = (value && value != '') ? moment(value).toDate() : null;
+                    this.displayValue = this.dateValue ? moment(this.dateValue).format(this.readFormat) :
+                    '';
+                }
+            },
+
+            /**
+             * things-date-picker-dialog에 전달할 callback 함수
+             ****
+             * @param {Object} dateObj
+             */
+            _applySelectedDate: function (dateObj) {
+                this.changeMode = 'dateValue'
+                this.dateValue = dateObj.date;
+            },
 
             /**
              * 버튼 클릭시 Date picker를 dialog 타입으로 나타나게 한다.
              ****
              */
-            openDatePicker: function() {
-                var dt = this.selectedDate ? new Date(this.selectedDate) : new Date();
+            openDatePicker: function () {
+                var dt = this.dateValue ? this.dateValue : new Date();
                 var event = {
                     dataObj: {
                         owner: this,
@@ -283,88 +278,21 @@ Copyright © HatioLab Inc. All rights reserved.
             },
 
             /**
-             * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
-             ****
+             * 검색 필드의 값이 필수 값일 때 (required가 true일 때)
+             * clear 버튼을 숨긴고 field의 required attribute를 추가하여 valdation 할 수 있도록 변경
              */
-            showTimePicker: function() {
-                this.$.timeDialog.toggle();
-            },
-
-            /**
-             * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
-             ****
-             */
-            selectTime: function() {
-                this.selectedTime = this.time;
-            },
-
-            /**
-             * things-date-picker-dialog에 전달할 callback 함수
-             ****
-             * @param {Object} dateObj
-             */
-            _applySelectedDate: function(dataObj) {
-                this.selectedDate = dataObj.date;
+            _requiredChanged: function (required) {
+                this.$['date-field'].setAttribute('required', true);
+                this.hideClearBtn = required;
             },
 
             /**
              * 초기화된 데이터를 제거하는 기능
              ****
              */
-            clearDateField: function() {
-                this.selectedDate = '';
-            },
-
-            /**
-             * 초기화된 데이터를 제거하는 기능
-             ****
-             */
-            clearTimeField: function() {
-                this.selectedTime = '';
-            },
-
-            /**
-             * 날짜가 변경 됐을 경우, value에 값 전달
-             ****
-             * @param {Object} selectedDate
-             */
-            _dateValueChanged: function(selectedDate) {
-                this._convertDateTimeValue(selectedDate, this.selectedTime);
-            },
-
-            /**
-             * 시간이 변경 됐을 경우, value에 값 전달
-             ****
-             * @param {Object} selectedTime
-             */
-            _timeValueChanged: function(selectedTime) {
-                this._convertDateTimeValue(this.selectedDate, selectedTime);
-            },
-
-            /**
-             * 날짜와 시간을 YYYY-MM-DD HH24:MI 형태 문자값으로 변환
-             ****
-             * @param {String} selectedDate
-             * @param {String} selectedTime
-             */
-            _convertDateTimeValue: function(selectedDate, selectedTime) {
-                if (!selectedDate || selectedDate == '') {
-                    this.$.input.value = '';
-                    // fire event
-                    this.fire('things-datetime-changed', '');
-                    return;
-                }
-
-                if (!selectedTime || selectedTime == '') {
-                    selectedTime = '00:00:00';
-                }
-
-                var date = moment(selectedDate + ' ' + selectedTime);
-                var formattedTime = date.format(this.writeFormat);
-                this.$.input.value = formattedTime;
-
-                // fire event
-                this.fire('things-datetime-changed', formattedTime);
+            clearField: function () {
+                this.changeMode = 'dateValue'
+                this.dateValue = null;
             }
         });
     </script>

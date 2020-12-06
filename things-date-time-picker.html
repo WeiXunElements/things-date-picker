@@ -31,10 +31,20 @@ Copyright © HatioLab Inc. All rights reserved.
                 display: block;
             }
 
+
             things-input-field::shadow input {
                 @apply(--things-input);
                 width: calc(31% - 37px);
             }
+
+
+            things-time-input::shadow input {
+                @apply(--things-input);
+                width: 30%;
+                margin-left: 50px;
+            }
+
+
 
             @media (max-width: 840px) {
                 things-input-field::shadow input {
@@ -70,7 +80,6 @@ Copyright © HatioLab Inc. All rights reserved.
                 @apply(--things-small-icon);
                 margin-right: 7px;
                 margin-left: -27px;
-                opacity: .4;
                 position: relative;
                 top: -2px;
             }
@@ -79,6 +88,14 @@ Copyright © HatioLab Inc. All rights reserved.
                 @apply(--things-picker-button);
                 background: url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
                 top: 1px;
+            }
+
+            .things-time-input {
+                width:30%;
+                margin-left: -50px;
+                margin-right: 7px;
+                margin-top: -60px;
+                width: calc(31.6% - 37px) !important;
             }
         </style>
 
@@ -96,19 +113,12 @@ Copyright © HatioLab Inc. All rights reserved.
         <paper-icon-button class="clear" icon="clear" on-tap="clearDateField"></paper-icon-button>
         <paper-icon-button class="picker" on-tap="openDatePicker" disabled$="[[disabled]]"></paper-icon-button>
 
-        <things-input-field 
-            type="text"
-            value="{{selectedTime}}"
-            validator="[[validator]]"
-            auto-validate="[[autoValidate]]"
-            error-message="[[errorMessage]]"
+        <things-time-input
+            class="things-time-input"
             hide-label
-            readonly
-            disabled$="[[disabled]]">
-        </things-input-field>
-
-        <paper-icon-button class="clear" icon="clear" on-tap="clearTimeField"></paper-icon-button>
-        <paper-icon-button class="picker" on-tap="showTimePicker" disabled$="[[disabled]]"></paper-icon-button>
+            validator="[[validator]]"
+            value="{{selectedTime}}">
+        </things-time-input>
 
         <paper-dialog id="timeDialog" modal class="paper-time-picker-dialog">
             <paper-time-picker id="timePicker" time="{{time}}"></paper-time-picker>
