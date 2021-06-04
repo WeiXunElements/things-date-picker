@@ -1,8 +1,8 @@
 {
     "name": "things-date-picker",
-    "version": "v2.2.21",
+    "version": "v2.2.22",
     "authors": [
-        "Hatio Lab. <heartyoh@hatiolab.com>"
+        "Shenzhen Weixun"
     ],
     "description": "Date(날짜) Picker, 날짜 범위 Picker, Date Time(날짜 시간) Picker",
     "keywords": [
@@ -11,8 +11,6 @@
         "seed"
     ],
     "main": "things-date-picker.html",
-    "license": "http://license.hatiolab.com/EULA",
-    "homepage": "http://elements.hatiolab.com/",
     "ignore": [
         "/.*",
         "/test/"

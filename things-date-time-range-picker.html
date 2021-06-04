@@ -1,17 +1,17 @@
 <!--
 @license
-Copyright © HatioLab Inc. All rights reserved.
+Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer.html" />
 
-<link rel="import" href="../paper-dialog/paper-dialog.html">
-<link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html" />
+<link rel="import" href="../paper-date-picker/paper-date-picker-dialog-style.html" />
 
-<link rel="import" href="../things-button/things-button.html">
-<link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html">
-<link rel="import" href="../things-input-field/things-input-field.html">
+<link rel="import" href="../things-button/things-button.html" />
+<link rel="import" href="../things-msg-box-behavior/things-msg-box-behavior.html" />
+<link rel="import" href="../things-input-field/things-input-field.html" />
 
-<link rel="import" href="./things-date-time-picker.html">
+<link rel="import" href="./things-date-time-picker.html" />
 
 <!--
 `<things-date-time-range-picker>` From Datetime과 To Datetime을 입력받아 기간을 표현하는 컴퍼넌트
@@ -32,25 +32,25 @@ Copyright © HatioLab Inc. All rights reserved.
   <template>
     <style>
       .input-fieldset {
-        @apply(--layout-flex)
+        @apply (--layout-flex);
       }
       things-input-field::shadow label {
       }
       things-input-field::shadow input {
-        width:calc(65% - 37px)
+        width: calc(65% - 37px);
       }
       paper-icon-button.clear {
-        @apply(--things-small-icon);
-        margin-left:-26px;
-        margin-right:6px;
-        opacity:.4;
-        position:relative;
-        top:-2px;
+        @apply (--things-small-icon);
+        margin-left: -26px;
+        margin-right: 6px;
+        opacity: 0.4;
+        position: relative;
+        top: -2px;
       }
       paper-icon-button.picker {
-        @apply(--things-picker-button);
-        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
-        top:1px;
+        @apply (--things-picker-button);
+        background: url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top: 1px;
       }
     </style>
 
@@ -65,7 +65,8 @@ Copyright © HatioLab Inc. All rights reserved.
           write-format="[[writeFormat]]"
           selected-date="{{fromDate}}"
           selected-time="{{fromTime}}"
-          value="{{fromValue}}">
+          value="{{fromValue}}"
+        >
         </things-date-time-picker>
       </div>
 
@@ -77,7 +78,8 @@ Copyright © HatioLab Inc. All rights reserved.
           write-format="[[writeFormat]]"
           selected-date="{{toDate}}"
           selected-time="{{toTime}}"
-          value="{{toValue}}">
+          value="{{toValue}}"
+        >
         </things-date-time-picker>
       </div>
     </div>
@@ -85,11 +87,9 @@ Copyright © HatioLab Inc. All rights reserved.
 
   <script>
     Polymer({
-      is: 'things-date-time-range-picker',
+      is: "things-date-time-range-picker",
 
-      behaviors: [
-        Things.MsgBoxBehavior
-      ],
+      behaviors: [Things.MsgBoxBehavior],
 
       properties: {
         /**
@@ -97,7 +97,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         name: {
-          type: String
+          type: String,
         },
 
         /**
@@ -106,7 +106,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         label: {
           type: String,
-          observer: '_labelChanged'
+          observer: "_labelChanged",
         },
 
         /**
@@ -115,7 +115,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         fromLabel: {
           type: String,
-          value: 'From'
+          value: "From",
         },
 
         /**
@@ -124,7 +124,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         toLabel: {
           type: String,
-          value: 'To'
+          value: "To",
         },
 
         /**
@@ -134,7 +134,7 @@ Copyright © HatioLab Inc. All rights reserved.
         locale: {
           type: String,
           notify: true,
-          value: 'en'
+          value: "en",
         },
 
         /**
@@ -143,7 +143,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         readDateFormat: {
           type: String,
-          value: 'YYYY-MM-DD'
+          value: "YYYY-MM-DD",
         },
 
         /**
@@ -152,7 +152,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         readTimeFormat: {
           type: String,
-          value: 'HH:mm:ss'
+          value: "HH:mm:ss",
         },
 
         /**
@@ -161,7 +161,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         writeFormat: {
           type: String,
-          value: 'YYYY-MM-DD HH:mm:ss'
+          value: "YYYY-MM-DD HH:mm:ss",
         },
 
         /**
@@ -169,7 +169,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: Date
          ******/
         initFromDate: {
-          type: Date
+          type: Date,
         },
 
         /**
@@ -177,7 +177,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: Date
          ******/
         initToDate: {
-          type: Date
+          type: Date,
         },
 
         /**
@@ -186,7 +186,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         fromDate: {
           type: String,
-          notify: true
+          notify: true,
         },
 
         /**
@@ -195,7 +195,7 @@ Copyright © HatioLab Inc. All rights reserved.
          ******/
         fromTime: {
           type: String,
-          notify: true
+          notify: true,
         },
 
         /**
@@ -203,7 +203,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: Date
          ******/
         toDate: {
-          type: String
+          type: String,
         },
 
         /**
@@ -211,7 +211,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         toTime: {
-          type: String
+          type: String,
         },
 
         /**
@@ -219,7 +219,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         fromValue: {
-          type: String
+          type: String,
         },
 
         /**
@@ -227,7 +227,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         toValue: {
-          type: String
+          type: String,
         },
 
         /**
@@ -235,7 +235,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         value: {
-          type: String
+          type: String,
         },
 
         /**
@@ -243,7 +243,7 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: Number
          ******/
         allowRange: {
-          type: Number
+          type: Number,
         },
 
         /**
@@ -251,19 +251,19 @@ Copyright © HatioLab Inc. All rights reserved.
          * @type: String
          ******/
         errorMessage: {
-          type: String
-        }
+          type: String,
+        },
       },
 
       observers: [
-        'initFromDateChanged(initFromDate)',
-        'initToDateChanged(initToDate)',
-        'fromDateChanged(fromDate)',
-        'fromTimeChanged(fromTime)',
-        'toDateChanged(toDate)',
-        'toTimeChanged(toTime)',
-        'fromValueChanged(fromValue)',
-        'toValueChanged(toValue)',
+        "initFromDateChanged(initFromDate)",
+        "initToDateChanged(initToDate)",
+        "fromDateChanged(fromDate)",
+        "fromTimeChanged(fromTime)",
+        "toDateChanged(toDate)",
+        "toTimeChanged(toTime)",
+        "fromValueChanged(fromValue)",
+        "toValueChanged(toValue)",
       ],
 
       /**
@@ -271,9 +271,9 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} label
        */
-      _labelChanged: function(label) {
-        this.fromLabel = label + ' (From)';
-        this.toLabel = label + ' (To)';
+      _labelChanged: function (label) {
+        this.fromLabel = label + " (From)";
+        this.toLabel = label + " (To)";
       },
 
       /**
@@ -281,8 +281,8 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {Date} initFromDate
        */
-      initFromDateChanged: function(initFromDate) {
-        if(initFromDate) {
+      initFromDateChanged: function (initFromDate) {
+        if (initFromDate) {
           this.fromDate = moment(initFromDate).format(this.readDateFormat);
           this.fromTime = moment(initFromDate).format(this.readTimeFormat);
           this.fromValue = moment(initFromDate).format(this.writeFormat);
@@ -294,8 +294,8 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {Date} initToDate
        */
-      initToDateChanged: function(initToDate) {
-        if(initToDate) {
+      initToDateChanged: function (initToDate) {
+        if (initToDate) {
           this.toDate = moment(initToDate).format(this.readDateFormat);
           this.toTime = moment(initToDate).format(this.readTimeFormat);
           this.toValue = moment(initToDate).format(this.writeFormat);
@@ -307,12 +307,12 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} fromDate
        */
-      fromDateChanged: function(fromDate) {
-        if(!fromDate) {
-          this.fromValue = '';
+      fromDateChanged: function (fromDate) {
+        if (!fromDate) {
+          this.fromValue = "";
         } else {
-          var fromTimeStr = this.fromTime ? this.fromTime : '00:00:00';
-          var fromDateStr = fromDate + ' ' + fromTimeStr;
+          var fromTimeStr = this.fromTime ? this.fromTime : "00:00:00";
+          var fromDateStr = fromDate + " " + fromTimeStr;
           var fromDate = new Date(fromDateStr);
           this.fromValue = moment(fromDate).format(this.writeFormat);
         }
@@ -323,12 +323,12 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} fromTime
        */
-      fromTimeChanged: function(fromTime) {
-        if(!this.fromDate) {
-          this.fromValue = '';
+      fromTimeChanged: function (fromTime) {
+        if (!this.fromDate) {
+          this.fromValue = "";
         } else {
-          var fromTimeStr = fromTime ? fromTime : '00:00:00';
-          var fromDateStr = this.fromDate + ' ' + fromTimeStr;
+          var fromTimeStr = fromTime ? fromTime : "00:00:00";
+          var fromDateStr = this.fromDate + " " + fromTimeStr;
           var fromDate = new Date(fromDateStr);
           this.fromValue = moment(fromDate).format(this.writeFormat);
         }
@@ -339,12 +339,12 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} toDate
        */
-      toDateChanged: function(toDate) {
-        if(!toDate) {
-          this.toValue = '';
+      toDateChanged: function (toDate) {
+        if (!toDate) {
+          this.toValue = "";
         } else {
-          var toTimeStr = this.toTime ? this.toTime : '00:00:00';
-          var toDateStr = toDate + ' ' + toTimeStr;
+          var toTimeStr = this.toTime ? this.toTime : "00:00:00";
+          var toDateStr = toDate + " " + toTimeStr;
           var toDate = new Date(toDateStr);
           this.toValue = moment(toDate).format(this.writeFormat);
         }
@@ -355,12 +355,12 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} toTime
        */
-      toTimeChanged: function(toTime) {
-        if(!this.toDate) {
-          this.toValue = '';
+      toTimeChanged: function (toTime) {
+        if (!this.toDate) {
+          this.toValue = "";
         } else {
-          var toTimeStr = toTime ? toTime : '00:00:00';
-          var toDateStr = this.toDate + ' ' + toTimeStr;
+          var toTimeStr = toTime ? toTime : "00:00:00";
+          var toDateStr = this.toDate + " " + toTimeStr;
           var toDate = new Date(toDateStr);
           this.toValue = moment(toDate).format(this.writeFormat);
         }
@@ -371,7 +371,7 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} fromValue
        */
-      fromValueChanged: function(fromValue) {
+      fromValueChanged: function (fromValue) {
         this.fromToValueChanged(fromValue, this.toValue);
       },
 
@@ -380,7 +380,7 @@ Copyright © HatioLab Inc. All rights reserved.
        ******
        * @param {String} toValue
        */
-      toValueChanged: function(toValue) {
+      toValueChanged: function (toValue) {
         this.fromToValueChanged(this.fromValue, toValue);
       },
 
@@ -390,11 +390,11 @@ Copyright © HatioLab Inc. All rights reserved.
        * @param {String} fromValue
        * @param {String} toValue
        */
-      fromToValueChanged: function(fromValue, toValue) {
-        if(!fromValue) fromValue = '';
-        if(!toValue) toValue = '';
-        this.value = (fromValue == '' && toValue == '') ? '' : fromValue + ',' + toValue;
-      }
+      fromToValueChanged: function (fromValue, toValue) {
+        if (!fromValue) fromValue = "";
+        if (!toValue) toValue = "";
+        this.value = fromValue == "" && toValue == "" ? "" : fromValue + "," + toValue;
+      },
     });
   </script>
 </dom-module>

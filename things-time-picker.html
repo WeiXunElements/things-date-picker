@@ -1,15 +1,15 @@
 <!--
 @license
-Copyright © HatioLab Inc. All rights reserved.
+Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer.html" />
 
-<link rel="import" href="../paper-dialog/paper-dialog.html">
-<link rel="import" href="../paper-time-picker/paper-time-picker.html">
-<link rel="import" href="../paper-time-picker/paper-time-picker-dialog-style.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html" />
+<link rel="import" href="../paper-time-picker/paper-time-picker.html" />
+<link rel="import" href="../paper-time-picker/paper-time-picker-dialog-style.html" />
 
-<link rel="import" href="../things-button/things-button.html">
-<link rel="import" href="../things-input-field/things-input-field.html">
+<link rel="import" href="../things-button/things-button.html" />
+<link rel="import" href="../things-input-field/things-input-field.html" />
 
 <!--
 `<things-time-picker>` Things Time Picker
@@ -23,23 +23,24 @@ Copyright © HatioLab Inc. All rights reserved.
 @demo demo/demo-things-time-picker.html
 -->
 <dom-module id="things-time-picker">
-    <template>
+  <template>
     <style>
-      things-input-field::shadow input{
-        @apply(--things-input);
-        width:calc(65% - 37px);
+      things-input-field::shadow input {
+        @apply (--things-input);
+        width: calc(65% - 37px);
       }
-      paper-icon-button.clear{
-        @apply(--things-small-icon);
-        margin-right:7px;margin-left:-27px;
-        opacity:.4;
-        position:relative;
-        top:-2px;
+      paper-icon-button.clear {
+        @apply (--things-small-icon);
+        margin-right: 7px;
+        margin-left: -27px;
+        opacity: 0.4;
+        position: relative;
+        top: -2px;
       }
-      paper-icon-button.picker{
-        @apply(--things-picker-button);
-        background:url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
-        top:1px;
+      paper-icon-button.picker {
+        @apply (--things-picker-button);
+        background: url(/images/icon-resource-select.png) 55% -97px no-repeat var(--paper-blue-grey-300);
+        top: 1px;
       }
     </style>
 
@@ -51,7 +52,8 @@ Copyright © HatioLab Inc. All rights reserved.
       validator="[[validator]]"
       auto-validate="[[autoValidate]]"
       error-message="[[errorMessage]]"
-      readonly>
+      readonly
+    >
       <paper-icon-button class="" icon="" on-tap="clear"></paper-icon-button>
     </things-input-field>
     <paper-icon-button class="clear" icon="clear" on-tap="clearField"></paper-icon-button>
@@ -64,88 +66,86 @@ Copyright © HatioLab Inc. All rights reserved.
         <paper-button raised dialog-dismiss>[[cancelLabel]]</paper-button>
       </div>
     </paper-dialog>
-
   </template>
 
-    <script type='text/javascript'>
-        (function() {
-            Polymer({
-                is: 'things-time-picker',
+  <script type="text/javascript">
+    (function () {
+      Polymer({
+        is: "things-time-picker",
 
-                properties: {
-                    value: {
-                        type: String,
-                        observer: '_valueChanged'
-                    },
+        properties: {
+          value: {
+            type: String,
+            observer: "_valueChanged",
+          },
 
-                    /**
-                     * input field에서 사용할 validator name
-                     * @type: String
-                     ******/
-                    validator: {
-                        type: String
-                    },
+          /**
+           * input field에서 사용할 validator name
+           * @type: String
+           ******/
+          validator: {
+            type: String,
+          },
 
-                    /**
-                     * input field의 auto vaidation 여부
-                     * @type: Boolean
-                     ******/
-                    autoValidate: {
-                        type: Boolean,
-                        value: false
-                    },
+          /**
+           * input field의 auto vaidation 여부
+           * @type: Boolean
+           ******/
+          autoValidate: {
+            type: Boolean,
+            value: false,
+          },
 
-                    /**
-                     * validation 오류시 출력되는 error message
-                     * @type: String
-                     ******/
-                    errorMessage: {
-                        type: String
-                    },
+          /**
+           * validation 오류시 출력되는 error message
+           * @type: String
+           ******/
+          errorMessage: {
+            type: String,
+          },
 
-                    selectLabel: String,
-                    cancelLabel: String
-                },
+          selectLabel: String,
+          cancelLabel: String,
+        },
 
-                attached: function() {
-                    // 弹出框打开时给按钮添加多语言属性
-                    this.selectLabel = Things.DataGlobal.t('button.select');
-                    this.cancelLabel = Things.DataGlobal.t('button.cancel');
-                },
+        attached: function () {
+          // 弹出框打开时给按钮添加多语言属性
+          this.selectLabel = Things.DataGlobal.t("button.select");
+          this.cancelLabel = Things.DataGlobal.t("button.cancel");
+        },
 
-                /**
-                 * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
-                 ****
-                 */
-                showTimePicker: function() {
-                    this.$.timeDialog.toggle();
-                },
-                /**
-                 * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
-                 ****
-                 */
-                selectTime: function() {
-                    this.selectedTime = this.time;
-                },
+        /**
+         * 버튼 클릭시 Time picker를 dialog 타입으로 나타나게 한다.
+         ****
+         */
+        showTimePicker: function () {
+          this.$.timeDialog.toggle();
+        },
+        /**
+         * time picker에서 시간을 결정하면 해당 날짜를 selectedTime에 초기화 한다.
+         ****
+         */
+        selectTime: function () {
+          this.selectedTime = this.time;
+        },
 
-                /**
-                 * 초기화된 데이터를 제거하는 기능
-                 ****
-                 */
-                clearField: function() {
-                    this.selectedTime = '';
-                },
+        /**
+         * 초기화된 데이터를 제거하는 기능
+         ****
+         */
+        clearField: function () {
+          this.selectedTime = "";
+        },
 
-                /**
-                 * time picker field의 값이 변화 했을시 실행되며
-                 * selectedTime에 새로운 value를 초기화 한다.
-                 ****
-                 */
-                _valueChanged: function(e) {
-                    this.selectedTime = e;
-                }
-
-            })
-        })();
-    </script>
+        /**
+         * time picker field의 값이 변화 했을시 실행되며
+         * selectedTime에 새로운 value를 초기화 한다.
+         ****
+         */
+        _valueChanged: function (e) {
+          this.selectedTime = e;
+        },
+      });
+    })();
+  </script>
 </dom-module>
