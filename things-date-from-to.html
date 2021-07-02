@@ -64,6 +64,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
           is-valid="[[fromValid]]"
           error-message="[[errorMessage]]"
           value="{{fromValue}}"
+          on-change="_onDateValueChanged"
         >
         </things-input-field>
 
@@ -82,7 +83,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
           is-valid="[[toValid]]"
           error-message="[[errorMessage]]"
           value="{{toValue}}"
-          readonly
+          on-change="_onDateValueChanged"
         >
         </things-input-field>
 
@@ -513,6 +514,24 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
         }
 
         this.value = realValue;
+      },
+
+      /**
+       * input으로 데이터를 수동입력한후...
+       ******
+       * @param {Object} event
+       */
+      _onDateValueChanged: function (event) {
+        const target = event.target,
+          value = target.value,
+          name = target.name;
+        if (name === 'fromDate') {
+          this.selectedFromDate = value;
+          this.fromValue = value;
+        } else {
+          this.selectedToDate = value;
+          this.toValue = value;
+        }
       },
     });
   </script>
