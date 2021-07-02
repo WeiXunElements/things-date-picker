@@ -64,7 +64,6 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
           is-valid="[[fromValid]]"
           error-message="[[errorMessage]]"
           value="{{fromValue}}"
-          readonly
         >
         </things-input-field>
 
@@ -96,7 +95,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
 
   <script>
     Polymer({
-      is: "things-date-from-to",
+      is: 'things-date-from-to',
 
       behaviors: [Things.MsgBoxBehavior],
 
@@ -115,7 +114,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
          ******/
         label: {
           type: String,
-          observer: "_labelChanged",
+          observer: '_labelChanged',
         },
 
         /**
@@ -124,7 +123,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
          ******/
         fromLabel: {
           type: String,
-          value: "From",
+          value: 'From',
         },
 
         /**
@@ -133,7 +132,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
          ******/
         toLabel: {
           type: String,
-          value: "To",
+          value: 'To',
         },
 
         /**
@@ -143,7 +142,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
         locale: {
           type: String,
           notify: true,
-          value: "en",
+          value: 'en',
         },
 
         /**
@@ -153,7 +152,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
         readFormat: {
           type: String,
           notify: true,
-          value: "YYYY-MM-DD",
+          value: 'YYYY-MM-DD',
         },
 
         /**
@@ -163,7 +162,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
         writeFormat: {
           type: String,
           notify: true,
-          value: "YYYY-MM-DD",
+          value: 'YYYY-MM-DD',
         },
 
         /**
@@ -241,14 +240,14 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
         },
       },
 
-      observers: ["_selectedFromDateChanged(selectedFromDate)", "_selectedToDateChanged(selectedToDate)"],
+      observers: ['_selectedFromDateChanged(selectedFromDate)', '_selectedToDateChanged(selectedToDate)'],
 
       /**
        * label을 property로 받아서 fromLabel과 toLabel을 초기화 합니다.
        */
       _labelChanged: function (label) {
-        this.fromLabel = label + " (From)";
-        this.toLabel = label + " (To)";
+        this.fromLabel = label + ' (From)';
+        this.toLabel = label + ' (To)';
       },
 
       /**
@@ -282,7 +281,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
           maxDate: maxDate,
           minDate: null,
         };
-        this.fire("things-date-picker-toggle", {
+        this.fire('things-date-picker-toggle', {
           dataObj: dataObj,
           callback: this._applyFromDate,
         });
@@ -303,7 +302,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
          */
         var maxDate = null;
         if (moment(currentDate).isBefore(minDate)) {
-          maxDate = moment().add("year", 10)._d;
+          maxDate = moment().add('year', 10)._d;
         }
 
         var dataObj = {
@@ -312,7 +311,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
           minDate: minDate,
           maxDate: maxDate,
         };
-        this.fire("things-date-picker-toggle", {
+        this.fire('things-date-picker-toggle', {
           dataObj: dataObj,
           callback: this._applyToDate,
         });
@@ -358,16 +357,16 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
       _validateSelectedDate: function (fromFlag, fromDate, toDate) {
         if (fromDate && toDate && fromDate > toDate) {
           this.openInfoMsg({
-            title: Things.DataGlobal.t("text.invalid_input"),
-            text: "From Date is larger than To Date",
-            type: "info",
+            title: Things.DataGlobal.t('text.invalid_input'),
+            text: 'From Date is larger than To Date',
+            type: 'info',
             timer: 5000,
           });
           return false;
         }
 
         var valid = true;
-        if (this.allowRange && this.allowRange != "") {
+        if (this.allowRange && this.allowRange != '') {
           valid = this._validateRange(fromFlag, fromDate, toDate);
         }
         return valid;
@@ -433,7 +432,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
        * @param {Date} defaultVal
        */
       _toDateObj: function (dateVal, defaultVal) {
-        var dt = !dateVal ? defaultVal : typeof dateVal == "object" ? dateVal : new Date(dateVal);
+        var dt = !dateVal ? defaultVal : typeof dateVal == 'object' ? dateVal : new Date(dateVal);
         return dt;
       },
 
@@ -466,7 +465,7 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
        */
       _readFormatDate: function (date) {
         if (date) {
-          var dt = typeof date == "object" ? moment(date).format(this.readFormat) : date;
+          var dt = typeof date == 'object' ? moment(date).format(this.readFormat) : date;
           return moment(dt).locale(this.locale).format(this.readFormat);
         } else {
           return null;
@@ -493,24 +492,24 @@ Copyright © 2015-2021 Shenzhen Weixun All rights reserved.
        * @param {Date} toDate
        */
       _fromToDateChanged: function (fromDate, toDate) {
-        var realValue = "";
+        var realValue = '';
 
         if (fromDate && toDate) {
           realValue = this._writeFormatDate(fromDate);
-          realValue += ",";
+          realValue += ',';
           realValue += this._writeFormatDate(toDate);
         } else if (fromDate && !toDate) {
           realValue = this._writeFormatDate(fromDate);
-          realValue += ",";
+          realValue += ',';
         } else if (!fromDate && toDate) {
-          realValue = ",";
+          realValue = ',';
           realValue += this._writeFormatDate(toDate);
         } else {
-          realValue = "";
+          realValue = '';
         }
 
-        if (realValue == ",") {
-          realValue = "";
+        if (realValue == ',') {
+          realValue = '';
         }
 
         this.value = realValue;
